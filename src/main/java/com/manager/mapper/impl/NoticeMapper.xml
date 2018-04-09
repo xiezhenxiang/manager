@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manager.mapper.NoticeMapper">
+  <resultMap id="BaseResultMap" type="com.manager.bean.Notice">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="pub_time" jdbcType="VARCHAR" property="pubTime" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="adminId" jdbcType="INTEGER" property="adminId" />
+    <result column="content" jdbcType="text" property="content" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, pub_time, title, adminId
+  </sql>
+  <sql id="Blob_Column_List">
+    content
+  </sql>
+
+  <select id="selectAll" resultMap="ResultMapWithBLOBs">
+    SELECT * FROM notice
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from notice
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from notice
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.manager.bean.Notice">
+    insert into notice (id, pub_time, title, 
+      adminId, content)
+    values (#{id,jdbcType=INTEGER}, #{pubTime,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
+      #{adminId,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.manager.bean.Notice">
+    insert into notice
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="pubTime != null">
+        pub_time,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="adminId != null">
+        adminId,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="pubTime != null">
+        #{pubTime,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="adminId != null">
+        #{adminId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.manager.bean.Notice">
+    update notice
+    <set>
+      <if test="pubTime != null">
+        pub_time = #{pubTime,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="adminId != null">
+        adminId = #{adminId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.manager.bean.Notice">
+    update notice
+    set pub_time = #{pubTime,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      adminId = #{adminId,jdbcType=INTEGER},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
