@@ -6,7 +6,7 @@
     <result column="pub_time" jdbcType="VARCHAR" property="pubTime" />
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="adminId" jdbcType="INTEGER" property="adminId" />
-    <result column="content" jdbcType="text" property="content" />
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
   </resultMap>
   <sql id="Base_Column_List">
     id, pub_time, title, adminId
@@ -15,11 +15,11 @@
     content
   </sql>
 
-  <select id="selectAll" resultMap="ResultMapWithBLOBs">
+  <select id="selectAll" resultMap="BaseResultMap">
     SELECT * FROM notice
   </select>
 
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     ,

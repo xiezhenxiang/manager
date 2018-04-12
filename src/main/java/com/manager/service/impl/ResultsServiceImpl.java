@@ -49,4 +49,9 @@ public class ResultsServiceImpl implements ResultsService{
     public int updateByPrimaryKey(Results record) {
         return resultsMapper.updateByPrimaryKey(record);
     }
+
+    @Override
+    public List<Results> selectBySelective(Results record) {
+        return resultsMapper.selectBySelective(record);
+    }
 }

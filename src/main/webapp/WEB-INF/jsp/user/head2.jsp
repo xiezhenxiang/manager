@@ -6,16 +6,20 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="css/public.css" />
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/public.js"></script>
     <title></title>
 </head>
 <body>
-<c:if test="${2 > 3}">
-    2 > 3
-</c:if>
-
-<c:if test="${2 < 3}">
-    2 < 3
-</c:if>
+<div class="head">
+    <div class="headL">
+        <img class="headLogo" src="img/logLOGO.png"/>
+    </div>
+    <%--<div class="headR">
+        <span style="color:#FFF"><a href="/" target="_blank">【登录】</a></span>
+    </div>--%>
+</div>
 
 </body>
 </html>

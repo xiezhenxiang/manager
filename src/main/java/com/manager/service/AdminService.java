@@ -18,4 +18,6 @@ public interface AdminService {
     int updateByPrimaryKeySelective(Admin record);
 
     int updateByPrimaryKey(Admin record);
+
+    List<Admin> selectAdminSelective(Admin para);
 }

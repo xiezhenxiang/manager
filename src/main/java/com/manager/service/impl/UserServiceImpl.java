@@ -11,6 +11,7 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
+
     @Autowired
     UserMapper userMapper;
 
@@ -49,5 +50,8 @@ public class UserServiceImpl implements UserService {
         return userMapper.updateByPrimaryKey(record);
     }
 
-
+    @Override
+    public List<User> SelectUserSelective(User para) {
+        return userMapper.SelectUserSelective(para);
+    }
 }

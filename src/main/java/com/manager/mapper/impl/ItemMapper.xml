@@ -15,7 +15,8 @@
     <result column="unit" jdbcType="VARCHAR" property="unit" />
     <result column="check" jdbcType="INTEGER" property="check" />
     <result column="filePath" jdbcType="VARCHAR" property="filePath" />
-      <result column="description" jdbcType="text" property="description" />
+    <result column="comment" jdbcType="VARCHAR" property="comment" />
+    <result column="description" jdbcType="LONGVARCHAR" property="description" />
   </resultMap>
 
   <sql id="Base_Column_List">
@@ -169,6 +170,9 @@
       <if test="filepath != null">
         filePath = #{filepath,jdbcType=VARCHAR},
       </if>
+        <if test="comment != null">
+            comment = #{comment,jdbcType=VARCHAR},
+        </if>
       <if test="description != null">
         description = #{description,jdbcType=LONGVARCHAR},
       </if>

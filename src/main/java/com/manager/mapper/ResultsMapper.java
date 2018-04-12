@@ -12,6 +12,8 @@ public interface ResultsMapper {
 
     int insertSelective(Results record);
 
+    List<Results> selectBySelective(Results record);
+
     List<Results> selectAll();
 
     Results selectByPrimaryKey(Integer id);

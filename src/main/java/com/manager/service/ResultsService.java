@@ -18,4 +18,6 @@ public interface ResultsService {
     int updateByPrimaryKeySelective(Results record);
 
     int updateByPrimaryKey(Results record);
+
+    List<Results> selectBySelective(Results record);
 }

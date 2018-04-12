@@ -11,7 +11,7 @@ public class Results {
 
     private String type;
 
-    private String domin;
+    private String domain;
 
     private String startTime;
 
@@ -25,9 +25,19 @@ public class Results {
 
     private Integer check;
 
-    private String filepath;
+    private String filePath;
 
     private String description;
+
+    private String comment;
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 
     public Integer getId() {
         return id;
@@ -69,12 +79,12 @@ public class Results {
         this.type = type == null ? null : type.trim();
     }
 
-    public String getDomin() {
-        return domin;
+    public String getDomain() {
+        return domain;
     }
 
-    public void setDomin(String domin) {
-        this.domin = domin == null ? null : domin.trim();
+    public void setDomain(String domain) {
+        this.domain = domain == null ? null : domain.trim();
     }
 
     public String getStartTime() {
@@ -125,12 +135,12 @@ public class Results {
         this.check = check;
     }
 
-    public String getFilepath() {
-        return filepath;
+    public String getFilePath() {
+        return filePath;
     }
 
-    public void setFilepath(String filepath) {
-        this.filepath = filepath == null ? null : filepath.trim();
+    public void setFilePath(String filePath) {
+        this.filePath = filePath == null ? null : filePath.trim();
     }
 
     public String getDescription() {
