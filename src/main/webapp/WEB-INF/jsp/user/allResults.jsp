@@ -41,12 +41,18 @@
                 <option value="科技创新">科技创新</option>
                 <option value="科学成果">科学成果</option>
             </select>
-            <span class="input-group-addon" id="basic-addon3">审核状态</span>
-            <select name="type" class="form-control" id="ccheck">
+            <span class="input-group-addon" id="basic-addon3">年份</span>
+            <select name="type" class="form-control" id="year">
                 <option value="-1" selected="selected">全部</option>
-                <option value="0">未审核</option>
-                <option value="1">审核通过</option>
-                <option value="2">审核不通过</option>
+                <option value="2018">2018</option>
+                <option value="2017">2017</option>
+                <option value="2016">2018</option>
+                <option value="2015">2018</option>
+                <option value="2014">2018</option>
+                <option value="2013">2018</option>
+                <option value="2012">2018</option>
+                <option value="2011">2018</option>
+                <option value="2010">2018</option>
 
             </select>
             <span class="input-group-btn">
@@ -96,30 +102,30 @@
                 <c:if test="${bean.check eq 0}"><tr></c:if>
                 <c:if test="${bean.check eq 1}"><tr class="bgcA"></c:if>
                 <c:if test="${bean.check eq 2}"><tr class="bgcB"></c:if>
-                    <td>${index.index + (page.pageNum - 1) * 10  + 1}</td>
-                    <td>${bean.name}</td>
-                    <td>${bean.type}</td>
-                    <td>${bean.domain}</td>
-                    <td>${bean.startTime}</td>
-                    <td>${bean.unit}</td>
-                    <c:if test="${empty bean.filePath or bean.filePath eq ''}">
-                        <td>无</td>
-                    </c:if>
-                    <c:if test="${not empty bean.filePath and bean.filePath ne ''}">
-                        <td><a href="user/uploadFile?filePath=${bean.filePath}">附件下载</a></td>
-                    </c:if>
-                    <c:if test="${bean.check eq 0}">
-                        <td>未审核</td>
-                    </c:if>
-                    <c:if test="${bean.check eq 1}">
-                        <td>审核通过</td>
-                    </c:if>
-                    <c:if test="${bean.check eq 2}">
-                        <td>审核不通过</td>
-                    </c:if>
-                    <td><a href="#" data-toggle="modal" data-target="#ViewModal" onclick="view('${bean.id}')">查看</a>
-                        | <a onclick="changeId('${bean.id}', '${bean.check}')">修改</a>
-                        |<a onclick="del('${bean.id}')">删除</a></td>
+                <td>${index.index + (page.pageNum - 1) * 10  + 1}</td>
+                <td>${bean.name}</td>
+                <td>${bean.type}</td>
+                <td>${bean.domain}</td>
+                <td>${bean.startTime}</td>
+                <td>${bean.unit}</td>
+                <c:if test="${empty bean.filePath or bean.filePath eq ''}">
+                    <td>无</td>
+                </c:if>
+                <c:if test="${not empty bean.filePath and bean.filePath ne ''}">
+                    <td><a href="user/uploadFile?filePath=${bean.filePath}">附件下载</a></td>
+                </c:if>
+                <c:if test="${bean.check eq 0}">
+                    <td>未审核</td>
+                </c:if>
+                <c:if test="${bean.check eq 1}">
+                    <td>审核通过</td>
+                </c:if>
+                <c:if test="${bean.check eq 2}">
+                    <td>审核不通过</td>
+                </c:if>
+                <td><a href="#" data-toggle="modal" data-target="#ViewModal" onclick="view('${bean.id}')">查看</a>
+                    | <a onclick="changeId('${bean.id}', '${bean.check}')">修改</a>
+                    |<a onclick="del('${bean.id}')">删除</a></td>
                 </tr>
 
             </c:forEach>
@@ -130,15 +136,15 @@
 
 </div>
 
-    <ul id="PageNum">
-        <li><a href="user/resultsList?pageNum=${page.firstPage}">首页</a></li>
-        <li><a href="user/resultsList?pageNum=${page.prePage}">上一页</a></li>
-        <c:forEach var="num" step="1" begin="1" end="${page.pages}">
-            <li><a href="user/resultsList?pageNum=${num}">${num}</a></li>
-        </c:forEach>
-        <li><a href="user/resultsList?pageNum=${page.nextPage}">下一页</a></li>
-        <li><a href="user/resultsList?pageNum=${page.lastPage}">尾页</a></li>
-    </ul>
+<ul id="PageNum">
+    <li><a href="user/resultsList?pageNum=${page.firstPage}">首页</a></li>
+    <li><a href="user/resultsList?pageNum=${page.prePage}">上一页</a></li>
+    <c:forEach var="num" step="1" begin="1" end="${page.pages}">
+        <li><a href="user/resultsList?pageNum=${num}">${num}</a></li>
+    </c:forEach>
+    <li><a href="user/resultsList?pageNum=${page.nextPage}">下一页</a></li>
+    <li><a href="user/resultsList?pageNum=${page.lastPage}">尾页</a></li>
+</ul>
 
 <div class="modal fade" id="ViewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -216,8 +222,8 @@
 </div>
 
 <div class="modal fade" id="UploadModal" >
-    <div class="modal-dialog" role="document" style = "width:900px;">
-        <div class="modal-content">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style = "width:900px;">
 
             <div class="page ">
                 <div class="banneradd bor">
@@ -251,10 +257,10 @@
                             </div>
                             <div style="display: inline-block">
                                 <div class="bbD">
-                                    &nbsp;&nbsp;&nbsp;&nbsp;开始时间：<input type="text" class="input1" name = "startTime" id="rstartTime" onclick="laydate()"/>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;开始时间：<input type="text" class="input1" name = "startTime" id="rstartTime"/>
                                 </div>
                                 <div class="bbD">
-                                    &nbsp;&nbsp;&nbsp;&nbsp;结束时间：<input type="text" class="input1" name = "endTime" id="rendTime" onclick="laydate()"/>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;结束时间：<input type="text" class="input1" name = "endTime" id="rendTime"/>
                                 </div>
                                 <div class="bbD">
                                     &nbsp;&nbsp;&nbsp;&nbsp;申请金额：<input type="text" class="input1" name = "coin" id="rcoin"/>
@@ -426,8 +432,8 @@
     function query(){
         var type = $("#ctype").val();
         var name = $("#cname").val();
-        var check = $("#ccheck").val();
-        var url = encodeURI(encodeURI("user/resultsList?type=" + type + "&name=" + name + "&check=" +check));
+        var year = $("#year").val();
+        var url = encodeURI(encodeURI("user/resultsList?type=" + type + "&name=" + name + "&year=" +check));
         window.location.href = url;
 
     }

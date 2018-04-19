@@ -32,12 +32,12 @@ li {
 	width: 440px;
 	height: 100%;
 	text-align: center;
-	float: left;
+	margin-left: -75px;
 	display: inline-block;
 }
 
 .head .headL img.headLogo {
-	padding-top: 28px;
+
 }
 
 .head .headR {

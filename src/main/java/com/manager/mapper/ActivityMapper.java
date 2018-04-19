@@ -14,11 +14,11 @@ public interface ActivityMapper {
 
     List<Activity> selectAll();
 
+    List<Activity> selectBySelective(Activity para);
+
     Activity selectByPrimaryKey(Integer id);
 
     int updateByPrimaryKeySelective(Activity record);
-
-    int updateByPrimaryKeyWithBLOBs(Activity record);
 
     int updateByPrimaryKey(Activity record);
 }

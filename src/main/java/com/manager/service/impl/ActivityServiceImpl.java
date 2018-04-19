@@ -11,6 +11,7 @@ import java.util.List;
 @Service
 public class ActivityServiceImpl implements ActivityService {
 
+
     @Autowired
     ActivityMapper activityMapper;
 
@@ -50,5 +51,9 @@ public class ActivityServiceImpl implements ActivityService {
         return activityMapper.updateByPrimaryKey(record);
     }
 
+    @Override
+    public List<Activity> selectBySelective(Activity para) {
+        return activityMapper.selectBySelective(para);
+    }
 
 }

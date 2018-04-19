@@ -18,4 +18,6 @@ public interface ActivityService {
     int updateByPrimaryKeySelective(Activity record);
 
     int updateByPrimaryKey(Activity record);
+
+    List<Activity> selectBySelective(Activity para);
 }

@@ -6,6 +6,8 @@ public class Item{
 
     private String type;
 
+    private String name;
+
     private Integer activityId;
 
     private Integer userId;
@@ -24,11 +26,19 @@ public class Item{
 
     private Integer check;
 
-    private String filepath;
+    private String filePath;
 
     private String description;
 
     private String comment;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getComment() {
         return comment;
@@ -110,12 +120,12 @@ public class Item{
         this.check = check;
     }
 
-    public String getFilepath() {
-        return filepath;
+    public String getFilePath() {
+        return filePath;
     }
 
-    public void setFilepath(String filepath) {
-        this.filepath = filepath == null ? null : filepath.trim();
+    public void setFilePath(String filePath) {
+        this.filePath = filePath == null ? null : filePath.trim();
     }
 
     public String getDescription() {

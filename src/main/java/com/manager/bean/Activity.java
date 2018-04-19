@@ -14,6 +14,26 @@ public class Activity {
 
     private String description;
 
+    private String filePath;
+
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
     public Integer getId() {
         return id;
     }

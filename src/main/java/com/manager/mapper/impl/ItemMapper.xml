@@ -5,6 +5,7 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <id column="end_time" jdbcType="VARCHAR" property="endTime" />
     <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="activityId" jdbcType="INTEGER" property="activityId" />
     <result column="userId" jdbcType="INTEGER" property="userId" />
     <result column="domain" jdbcType="VARCHAR" property="domain" />
@@ -31,6 +32,30 @@
     SELECT * FROM item
   </select>
 
+  <select id="selectBySelective" parameterType="com.manager.bean.Item" resultMap="BaseResultMap">
+    select *
+    from item
+    where 1 = 1
+    <if test="type != null">
+      AND `type` = #{type}
+    </if>
+    <if test="activityId != null">
+      AND activityId =#{activityId}
+    </if>
+    <if test="userId != null">
+      AND userId = #{userId}
+    </if>
+    <if test="domain != null">
+      AND domain = #{domain}
+    </if>
+    <if test='startTime != null and startTime != ""'>
+      AND #{startTime} > start_time AND end_time > #{startTime}
+    </if>
+    <if test="check != null">
+      AND check = #{check}
+    </if>
+  </select>
+
   <select id="selectByPrimaryKey" parameterType="int" resultMap="BaseResultMap">
     select *
     from item
@@ -40,6 +65,11 @@
     delete from item
     where id = #{id,jdbcType=INTEGER}
   </delete>
+
+    <delete id="cancelApply" parameterType="map">
+        delete from item
+         where userId = #{userId,jdbcType=INTEGER} AND activityId = #{activityId}
+    </delete>
   <insert id="insert" parameterType="com.manager.bean.Item">
     insert into item (id, end_time, type, 
       activityId, userId, domain, 
@@ -47,27 +77,31 @@
       unit, check, filePath, 
       description)
     values (#{id,jdbcType=INTEGER}, #{endTime,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
-      #{activityid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{domain,jdbcType=VARCHAR}, 
+      #{activityId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{domain,jdbcType=VARCHAR}, 
       #{startTime,jdbcType=VARCHAR}, #{coin,jdbcType=VARCHAR}, #{group,jdbcType=VARCHAR}, 
-      #{unit,jdbcType=VARCHAR}, #{check,jdbcType=INTEGER}, #{filepath,jdbcType=VARCHAR}, 
+      #{unit,jdbcType=VARCHAR}, #{check,jdbcType=INTEGER}, #{filePath,jdbcType=VARCHAR}, 
       #{description,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.manager.bean.Item">
+
+    <insert id="insertSelective" parameterType="com.manager.bean.Item">
     insert into item
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
       </if>
+      <if test="name != null">
+        name,
+      </if>
       <if test="endTime != null">
         end_time,
       </if>
       <if test="type != null">
-        type,
+        `type`,
       </if>
-      <if test="activityid != null">
+      <if test="activityId != null">
         activityId,
       </if>
-      <if test="userid != null">
+      <if test="userId != null">
         userId,
       </if>
       <if test="domain != null">
@@ -80,15 +114,15 @@
         coin,
       </if>
       <if test="group != null">
-        group,
+        `group`,
       </if>
       <if test="unit != null">
         unit,
       </if>
       <if test="check != null">
-        check,
+        `check`,
       </if>
-      <if test="filepath != null">
+      <if test="filePath != null">
         filePath,
       </if>
       <if test="description != null">
@@ -99,17 +133,20 @@
       <if test="id != null">
         #{id,jdbcType=INTEGER},
       </if>
+        <if test="name != null">
+            #{name,jdbcType=INTEGER},
+        </if>
       <if test="endTime != null">
         #{endTime,jdbcType=VARCHAR},
       </if>
       <if test="type != null">
         #{type,jdbcType=VARCHAR},
       </if>
-      <if test="activityid != null">
-        #{activityid,jdbcType=INTEGER},
+      <if test="activityId != null">
+        #{activityId,jdbcType=INTEGER},
       </if>
-      <if test="userid != null">
-        #{userid,jdbcType=INTEGER},
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
       </if>
       <if test="domain != null">
         #{domain,jdbcType=VARCHAR},
@@ -129,8 +166,8 @@
       <if test="check != null">
         #{check,jdbcType=INTEGER},
       </if>
-      <if test="filepath != null">
-        #{filepath,jdbcType=VARCHAR},
+      <if test="filePath != null">
+        #{filePath,jdbcType=VARCHAR},
       </if>
       <if test="description != null">
         #{description,jdbcType=LONGVARCHAR},
@@ -143,11 +180,11 @@
       <if test="type != null">
         type = #{type,jdbcType=VARCHAR},
       </if>
-      <if test="activityid != null">
-        activityId = #{activityid,jdbcType=INTEGER},
+      <if test="activityId != null">
+        activityId = #{activityId,jdbcType=INTEGER},
       </if>
-      <if test="userid != null">
-        userId = #{userid,jdbcType=INTEGER},
+      <if test="userId != null">
+        userId = #{userId,jdbcType=INTEGER},
       </if>
       <if test="domain != null">
         domain = #{domain,jdbcType=VARCHAR},
@@ -159,16 +196,16 @@
         coin = #{coin,jdbcType=VARCHAR},
       </if>
       <if test="group != null">
-        group = #{group,jdbcType=VARCHAR},
+        `group` = #{group,jdbcType=VARCHAR},
       </if>
       <if test="unit != null">
         unit = #{unit,jdbcType=VARCHAR},
       </if>
       <if test="check != null">
-        check = #{check,jdbcType=INTEGER},
+        `check`` = #{check,jdbcType=INTEGER},
       </if>
-      <if test="filepath != null">
-        filePath = #{filepath,jdbcType=VARCHAR},
+      <if test="filePath != null">
+        filePath = #{filePath,jdbcType=VARCHAR},
       </if>
         <if test="comment != null">
             comment = #{comment,jdbcType=VARCHAR},
@@ -183,16 +220,18 @@
   <update id="updateByPrimaryKey" parameterType="com.manager.bean.Item">
     update item
     set type = #{type,jdbcType=VARCHAR},
-      activityId = #{activityid,jdbcType=INTEGER},
-      userId = #{userid,jdbcType=INTEGER},
+      activityId = #{activityId,jdbcType=INTEGER},
+      userId = #{userId,jdbcType=INTEGER},
       domain = #{domain,jdbcType=VARCHAR},
       start_time = #{startTime,jdbcType=VARCHAR},
       coin = #{coin,jdbcType=VARCHAR},
-      group = #{group,jdbcType=VARCHAR},
+      `group` = #{group,jdbcType=VARCHAR},
       unit = #{unit,jdbcType=VARCHAR},
-      check = #{check,jdbcType=INTEGER},
-      filePath = #{filepath,jdbcType=VARCHAR},
+      `check` = #{check,jdbcType=INTEGER},
+      filePath = #{filePath,jdbcType=VARCHAR},
       description = #{description}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
 </mapper>

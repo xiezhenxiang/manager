@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ItemServiceImpl implements ItemService{
@@ -48,5 +49,15 @@ public class ItemServiceImpl implements ItemService{
     @Override
     public int updateByPrimaryKey(Item record) {
         return itemMapper.updateByPrimaryKey(record);
+    }
+
+    @Override
+    public List<Item> selectBySelective(Item para) {
+        return itemMapper.selectBySelective(para);
+    }
+
+    @Override
+    public void cancelApply(Map<String, Object> para) {
+        itemMapper.cancelApply(para);
     }
 }

@@ -16,7 +16,7 @@
     <!-- 头部 -->
     <div class="head">
         <div class="headL">
-            <img class="headLogo" src="img/logLOGO.png"/>
+            <img class="headLogo" src="img/LOGO.png" style="width:300px;height:120px"/>
         </div>
         <%--<div class="headR">
             <span style="color:#FFF">欢迎：${user.name}</span> <a href="/" rel="external">【退出】</a>

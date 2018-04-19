@@ -16,6 +16,7 @@
     <link rel="stylesheet" type="text/css" href="layer/skin/layer.css">
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="layer/layer.js"></script>
+    <script src="js/laydate/laydate.js"></script>
     <title></title>
 </head>
 <body onload="message()">
@@ -58,10 +59,10 @@
                     </div>
                     <div style="display: inline-block">
                         <div class="bbD">
-                            &nbsp;&nbsp;&nbsp;&nbsp;开始时间：<input type="text" class="input1" name = "startTime" id="startTime"/>
+                            &nbsp;&nbsp;&nbsp;&nbsp;开始时间：<input type="text" class="input1" name = "startTime" id="startTime" onclick="laydate()"/>
                         </div>
                         <div class="bbD">
-                            &nbsp;&nbsp;&nbsp;&nbsp;结束时间：<input type="text" class="input1" name = "endTime" id="endTime"/>
+                            &nbsp;&nbsp;&nbsp;&nbsp;结束时间：<input type="text" class="input1" name = "endTime" id="endTime" onclick="laydate()"/>
                         </div>
                         <div class="bbD">
                             &nbsp;&nbsp;&nbsp;&nbsp;申请金额：<input type="text" class="input1" name = "coin" id="coin"/>

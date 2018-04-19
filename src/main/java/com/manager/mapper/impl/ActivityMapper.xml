@@ -7,29 +7,35 @@
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="start_time" jdbcType="VARCHAR" property="startTime" />
     <result column="end_time" jdbcType="VARCHAR" property="endTime" />
-  </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.manager.bean.Activity">
     <result column="description" jdbcType="LONGVARCHAR" property="description" />
   </resultMap>
-  <sql id="Base_Column_List">
-    id, type, name, start_time, end_time
-  </sql>
-  <sql id="Blob_Column_List">
-    description
-  </sql>
-  <select id="selectAll" resultMap="ResultMapWithBLOBs">
+
+  <select id="selectAll" resultMap="BaseResultMap">
     SELECT * FROM activity
   </select>
 
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
-    select 
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select *
     from activity
     where id = #{id,jdbcType=INTEGER}
   </select>
 
+  <select id="selectBySelective" parameterType="com.manager.bean.Activity" resultMap="BaseResultMap">
+    select * from activity
+    where 1 = 1
+    <if test="type != null">
+      AND type = #{type}
+    </if>
+    <if test="name != null">
+      AND name LIKE CONCAT(CONCAT("%",#{name}),"%")
+    </if>
+    <if test='startTime != null and startTime != ""'>
+      AND #{startTime} > start_time AND end_time > #{startTime}
+    </if>
+    <if test="description != null">
+      AND description LIKE #{description}
+    </if>
+  </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from activity
@@ -107,6 +113,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.manager.bean.Activity">
     update activity
     set type = #{type,jdbcType=VARCHAR},
@@ -116,6 +123,7 @@
       description = #{description,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
   <update id="updateByPrimaryKey" parameterType="com.manager.bean.Activity">
     update activity
     set type = #{type,jdbcType=VARCHAR},
