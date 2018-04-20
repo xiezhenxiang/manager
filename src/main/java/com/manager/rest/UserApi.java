@@ -2,14 +2,8 @@ package com.manager.rest;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.manager.bean.Activity;
-import com.manager.bean.Item;
-import com.manager.bean.Results;
-import com.manager.bean.User;
-import com.manager.service.ActivityService;
-import com.manager.service.ItemService;
-import com.manager.service.ResultsService;
-import com.manager.service.UserService;
+import com.manager.bean.*;
+import com.manager.service.*;
 import net.sf.json.JSONObject;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.apache.commons.io.FileUtils;
@@ -41,6 +35,8 @@ public class UserApi {
     private ActivityService activityService;
     @Autowired
     private ItemService itemService;
+    @Autowired
+    private NoticeService noticeService;
 
     @RequestMapping("/addResults")
     public String addResults(HttpServletRequest request, Results results, MultipartFile file) throws IOException {
@@ -265,5 +261,132 @@ public class UserApi {
         itemService.cancelApply(para);
         request.setAttribute("message", "取消成功！");
         return activityList(request, 1, new Activity());
+    }
+
+    @RequestMapping("/itemList")
+    public String itemList(HttpServletRequest request, @RequestParam(required=true,defaultValue="1") Integer pageNum
+            , Item para) throws IOException, ServletException {
+
+        User user = (User)request.getSession().getAttribute("user");
+
+        para.setUserId(user.getId());
+
+        if(para.getType() != null){
+            para.setType(URLDecoder.decode(para.getType(), "utf-8"));
+        }
+        if(para.getName() != null && !para.getName().trim().equals("")){
+            para.setName(URLDecoder.decode(para.getName(), "utf-8"));
+        }
+        if(para.getType() != null && para.getType().equals("-1")){
+            para.setType(null);
+        }
+        if(para.getCheck() != null && para.getCheck() == -1){
+            para.setCheck(null);
+        }
+        List<Item> ls = new ArrayList<Item>();
+        PageHelper.startPage(pageNum, 10);
+        ls = itemService.selectBySelective(para);
+
+        PageInfo<Item> pageInfo =new PageInfo<Item>(ls);
+        request.setAttribute("page", pageInfo);
+        request.setAttribute("list", ls);
+
+        return "user/itemList";
+    }
+
+    @RequestMapping("/getItemById")
+    public void getItemById(HttpServletResponse response, Integer id) throws IOException {
+
+        response.setContentType("UTF-8");
+        Item item = itemService.selectByPrimaryKey(id);
+        PrintWriter pw =  response.getWriter();
+        JSONObject json = JSONObject.fromObject(item);
+        pw.write(new String(json.toString().getBytes("UTF-8"), "ISO-8859-1"));
+        pw.close();
+    }
+
+    @RequestMapping("/delItem")
+    public String delItem(HttpServletRequest request, HttpServletResponse response, Integer id) throws IOException, ServletException {
+
+        itemService.deleteByPrimaryKey(id);
+        request.setAttribute("message", "删除成功！");
+        return itemList(request, 1, new Item());
+
+    }
+
+    @RequestMapping("/updateItem")
+    public String updateItem(HttpServletRequest request, Item item, MultipartFile file, MultipartFile file2) throws IOException, ServletException {
+
+        User user = (User)request.getSession().getAttribute("user");
+        if(!file.getOriginalFilename().equals("")){
+            File dataDir = new File("C:/bsData");
+            if(!dataDir.exists()){
+                dataDir.mkdir();
+            }
+            File tempFile = new File("C:/bsData/" + user.getId() + "_" + user.getName()
+                    + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".")));
+            FileUtils.copyInputStreamToFile(file.getInputStream(), tempFile);
+            item.setFilePath(tempFile.getAbsolutePath().replaceAll("\\\\", "/"));
+        }else if(!file2.getOriginalFilename().equals("")){
+            File dataDir = new File("C:/bsData");
+            if(!dataDir.exists()){
+                dataDir.mkdir();
+            }
+            File tempFile = new File("C:/bsData/" + user.getId() + "_" + user.getName() + "_结项"
+                    + file2.getOriginalFilename().substring(file2.getOriginalFilename().lastIndexOf(".")));
+            FileUtils.copyInputStreamToFile(file2.getInputStream(), tempFile);
+            item.setFilePath2(tempFile.getAbsolutePath().replaceAll("\\\\", "/"));
+        }
+
+        itemService.updateByPrimaryKeySelective(item);
+        request.setAttribute("message", "修改成功！");
+
+        return itemList(request, 1, new Item());
+
+    }
+
+    @RequestMapping("/selfInfo")
+    public String selfInfo(HttpServletRequest request) throws IOException, ServletException {
+
+        User user = (User)request.getSession().getAttribute("user");
+        request.setAttribute("user", user);
+
+        return "user/selfInfo";
+
+    }
+
+    @RequestMapping("/updateUser")
+    public String updateUser(HttpServletRequest request, User para) throws IOException, ServletException {
+
+        userService.updateByPrimaryKeySelective(para);
+        User user = userService.selectByPrimaryKey(para.getId());
+        request.setAttribute("message", "修改成功！");
+        request.getSession().setAttribute("user", user);
+        return selfInfo(request);
+
+    }
+
+    @RequestMapping("noticeList")
+    public String noticeList(HttpServletRequest request, @RequestParam(required=true,defaultValue="1") Integer pageNum) throws IOException, ServletException {
+
+        List<Notice> ls = new ArrayList<Notice>();
+        PageHelper.startPage(pageNum, 10);
+        ls = noticeService.selectAll();
+
+        PageInfo<Notice> pageInfo =new PageInfo<Notice>(ls);
+        request.setAttribute("page", pageInfo);
+        request.setAttribute("list", ls);
+        return "user/noticeList";
+
+    }
+
+    @RequestMapping("notice")
+    public String notice(HttpServletRequest request, Integer id) throws IOException, ServletException {
+
+        Notice notice = noticeService.selectByPrimaryKey(id);
+        notice.setContent(notice.getContent().replaceAll("\r\n", "<br/>").replaceAll("\n", "<br/>"));
+        request.setAttribute("notice", notice);
+        return "user/notice";
+
     }
 }

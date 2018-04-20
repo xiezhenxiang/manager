@@ -16,6 +16,7 @@
     <result column="unit" jdbcType="VARCHAR" property="unit" />
     <result column="check" jdbcType="INTEGER" property="check" />
     <result column="filePath" jdbcType="VARCHAR" property="filePath" />
+    <result column="filePath2" jdbcType="VARCHAR" property="filePath2" />
     <result column="comment" jdbcType="VARCHAR" property="comment" />
     <result column="description" jdbcType="LONGVARCHAR" property="description" />
   </resultMap>
@@ -52,7 +53,7 @@
       AND #{startTime} > start_time AND end_time > #{startTime}
     </if>
     <if test="check != null">
-      AND check = #{check}
+      AND `check` = #{check}
     </if>
   </select>
 
@@ -74,12 +75,12 @@
     insert into item (id, end_time, type, 
       activityId, userId, domain, 
       start_time, coin, group, 
-      unit, check, filePath, 
+      unit, check, filePath, filePath2,
       description)
     values (#{id,jdbcType=INTEGER}, #{endTime,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
       #{activityId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{domain,jdbcType=VARCHAR}, 
       #{startTime,jdbcType=VARCHAR}, #{coin,jdbcType=VARCHAR}, #{group,jdbcType=VARCHAR}, 
-      #{unit,jdbcType=VARCHAR}, #{check,jdbcType=INTEGER}, #{filePath,jdbcType=VARCHAR}, 
+      #{unit,jdbcType=VARCHAR}, #{check,jdbcType=INTEGER}, #{filePath,jdbcType=VARCHAR}, #{filePath2,jdbcType=VARCHAR},
       #{description,jdbcType=LONGVARCHAR})
   </insert>
 
@@ -125,6 +126,9 @@
       <if test="filePath != null">
         filePath,
       </if>
+      <if test="filePath2 != null">
+        filePath2,
+      </if>
       <if test="description != null">
         description,
       </if>
@@ -169,6 +173,9 @@
       <if test="filePath != null">
         #{filePath,jdbcType=VARCHAR},
       </if>
+      <if test="filePath2 != null">
+        #{filePath2,jdbcType=VARCHAR},
+      </if>
       <if test="description != null">
         #{description,jdbcType=LONGVARCHAR},
       </if>
@@ -178,7 +185,10 @@
     update item
     <set>
       <if test="type != null">
-        type = #{type,jdbcType=VARCHAR},
+        `type` = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
       </if>
       <if test="activityId != null">
         activityId = #{activityId,jdbcType=INTEGER},
@@ -202,10 +212,13 @@
         unit = #{unit,jdbcType=VARCHAR},
       </if>
       <if test="check != null">
-        `check`` = #{check,jdbcType=INTEGER},
+        `check` = #{check,jdbcType=INTEGER},
       </if>
       <if test="filePath != null">
         filePath = #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="filePath2 != null">
+        filePath2 = #{filePath2,jdbcType=VARCHAR},
       </if>
         <if test="comment != null">
             comment = #{comment,jdbcType=VARCHAR},
@@ -213,6 +226,7 @@
       <if test="description != null">
         description = #{description,jdbcType=LONGVARCHAR},
       </if>
+      id = #{id},
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -229,6 +243,7 @@
       unit = #{unit,jdbcType=VARCHAR},
       `check` = #{check,jdbcType=INTEGER},
       filePath = #{filePath,jdbcType=VARCHAR},
+      filePath2 = #{filePath2,jdbcType=VARCHAR},
       description = #{description}
     where id = #{id,jdbcType=INTEGER}
   </update>

@@ -28,6 +28,8 @@ public class Item{
 
     private String filePath;
 
+    private String filePath2;
+
     private String description;
 
     private String comment;
@@ -150,5 +152,13 @@ public class Item{
 
     public void setEndTime(String endTime) {
         this.endTime = endTime;
+    }
+
+    public String getFilePath2() {
+        return filePath2;
+    }
+
+    public void setFilePath2(String filePath2) {
+        this.filePath2 = filePath2;
     }
 }

@@ -10,10 +10,12 @@
     <link rel="stylesheet" type="text/css" href="css/public.css" />
     <link rel="stylesheet" type="text/css" href="css/page.css" />
     <link rel="stylesheet" type="text/css" href="css/css.css" />
+    <link rel="stylesheet" type="text/css" href="layer/skin/layer.css">
     <link rel="stylesheet" type="text/css" href="bootstrap/bootstrap.min.css">
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/public.js"></script>
     <script type="text/javascript" src="bootstrap/bootstrap.min.js"></script>
+    <script type="text/javascript" src="layer/layer.js"></script>
 </head>
 <body onload="message()">
 <!-- 登录body -->
@@ -120,6 +122,7 @@
 <script>
 
     function message() {
+
         var message = "${message}";
         if(message != null && message != ""){
             layer.alert(message);

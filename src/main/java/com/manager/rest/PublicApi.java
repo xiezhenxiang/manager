@@ -50,4 +50,9 @@ public class PublicApi {
     public String resultsListJsp(){
         return "user/resultsList";
     }
+
+    @RequestMapping("/contactJsp")
+    public String contactJsp(){
+        return "user/contact";
+    }
 }

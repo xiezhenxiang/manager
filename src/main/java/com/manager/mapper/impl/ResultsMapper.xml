@@ -31,9 +31,7 @@
 
     <select id="selectBySelective" parameterType="com.manager.bean.Results" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List" />
-        ,
-        <include refid="Blob_Column_List" />
+          *
         from results
         where 1 = 1
         <if test="userId != null">
@@ -53,6 +51,9 @@
         </if>
         <if test="check != null">
             AND `check` = #{check}
+        </if>
+        <if test='startTime != null and startTime != ""'>
+            AND #{startTime} > start_time AND end_time > #{startTime}
         </if>
     </select>
 

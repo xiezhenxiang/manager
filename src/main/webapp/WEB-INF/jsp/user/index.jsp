@@ -15,7 +15,7 @@
 
     <frameset rows="100*" cols="220,*" scrolling="No" framespacing="0" frameborder="no" border="0">
         <frame src="uLeftJsp" name="leftmenu" id="mainFrame" title="mainFrame">
-        <frame src="uMainJsp" name="main" scrolling="yes" noresize="noresize" id="rightFrame" title="rightFrame">
+        <frame src="user/allResults" name="main" scrolling="yes" noresize="noresize" id="rightFrame" title="rightFrame">
     </frameset>
 
 </frameset>

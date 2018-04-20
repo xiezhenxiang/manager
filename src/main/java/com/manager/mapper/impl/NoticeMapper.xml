@@ -16,7 +16,7 @@
   </sql>
 
   <select id="selectAll" resultMap="BaseResultMap">
-    SELECT * FROM notice
+    SELECT * FROM notice ORDER BY pub_time DESC
   </select>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">

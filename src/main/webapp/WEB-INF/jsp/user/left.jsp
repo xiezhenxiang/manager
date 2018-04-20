@@ -8,8 +8,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title></title>
     <link rel="stylesheet" type="text/css" href="css/public.css" />
+    <link rel="stylesheet" type="text/css" href="layer/skin/layer.css">
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/public.js"></script>
+    <script type="text/javascript" src="layer/layer.js"></script>
 </head>
 <body id="bg">
 
@@ -17,9 +19,7 @@
 <div class="container">
 
     <div class="leftsidebar_box">
-        <a href="main.html" target="main"><div class="line">
-            <img src="img/coin01.png" />&nbsp;&nbsp;首页
-        </div></a>
+
         <dl class="system_log">
             <dt>
                 <img class="icon1" src="img/coin03.png" /><img class="icon2" src="img/coin04.png" /> 成果库
@@ -27,7 +27,7 @@
             </dt>
             <dd>
                 <img class="coin11" src="img/coin111.png" /><img class="coin22" src="img/coin222.png" />
-                <a class="cks" href="tab.html" target="main">成果搜索</a><img class="icon5" src="img/coin21.png" />
+                <a class="cks" href="user/allResults" target="main">成果搜索</a><img class="icon5" src="img/coin21.png" />
             </dd>
         </dl>
         <dl class="system_log">
@@ -35,6 +35,10 @@
                 <img class="icon1" src="img/coin01.png" /><img class="icon2" src="img/coin02.png" /> 通知公告
                 <img class="icon3"src="img/coin19.png" /><img class="icon4" src="img/coin20.png" />
             </dt>
+            <dd>
+                <img class="coin11" src="img/coin111.png" /><img class="coin22" src="img/coin222.png" />
+                <a href="user/noticeList" target="main" class="cks">公告列表</a><img class="icon5" src="img/coin21.png" />
+            </dd>
         </dl>
         <dl class="system_log">
             <dt>
@@ -61,7 +65,7 @@
             </dd>
             <dd>
                 <img class="coin11" src="img/coin111.png" /><img class="coin22" src="img/coin222.png" />
-                <a class="cks">我的项目</a><img class="icon5" src="img/coin21.png" />
+                <a class="cks" href="user/itemList" target="main">我的项目</a><img class="icon5" src="img/coin21.png" />
             </dd>
         </dl>
         <dl class="system_log">
@@ -71,7 +75,7 @@
             </dt>
             <dd>
                 <img class="coin11" src="img/coin111.png" /><img class="coin22" src="img/coin222.png" />
-                <a class="cks">联系方式</a><img class="icon5" src="img/coin21.png" />
+                <a class="cks" href="contactJsp" target="main">联系方式</a><img class="icon5" src="img/coin21.png" />
             </dd>
         </dl>
         <dl class="system_log">
@@ -81,10 +85,11 @@
             </dt>
             <dd>
                 <img class="coin11" src="img/coin111.png" /><img class="coin22" src="img/coin222.png" />
-                <a href="changepwd.html" target="main" class="cks">修改个人信息</a><img class="icon5" src="img/coin21.png" />
+                <a href="user/selfInfo" target="main" class="cks">修改密码</a><img class="icon5" src="img/coin21.png" />
             </dd>
-            <dd>
-                <img class="coin11" src="img/coin111.png" /><img class="coin22" src="img/coin222.png" /><a class="cks">退出</a>
+            <dd onclick="exit()">
+                <img class="coin11" src="img/coin111.png" /><img class="coin22" src="img/coin222.png" />
+                <a class="cks">退出</a>
                 <img class="icon5" src="img/coin21.png" />
             </dd>
         </dl>
@@ -94,4 +99,12 @@
 </div>
 
 </body>
+
+<
+<script>
+    function exit() {
+
+        parent.location.href="/";
+    }
+</script>
 </html>
