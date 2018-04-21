@@ -29,7 +29,7 @@
 </head>
 <body onload="message()">
 <!-- MainForm -->
-<div id="MainForm" style="margin:0 auto;width:70%;margin-top:50px;">
+<div id="MainForm" style="margin:0 auto;width:60%;margin-top:50px;">
     <div class="form_boxA">
 
         <table cellpadding="0" cellspacing="0">

@@ -27,12 +27,13 @@
 </head>
 <body onload="message()">
 <!-- MainForm -->
-<div id="MainForm" style="margin:0 auto;width:70%;margin-top:50px;padding:30px;">
+<div id="MainForm" style="margin:0 auto;width:60%;margin-top:40px;padding:40px;">
+    <a href="user/noticeList">返回公告列表</a>
     <h3 style="text-align: center;color: #FF6600;display: block;font-size: 1.17em;-webkit-margin-before: 1em;-webkit-margin-after: 1em;-webkit-margin-start: 0px;-webkit-margin-end: 0px;font-weight: bold;">
         ${notice.title}<br/>
     </h3>
     ${notice.content}
-
+    <br/><br/><a href="user/noticeList">返回公告列表</a>
 </div>
 
 </body>

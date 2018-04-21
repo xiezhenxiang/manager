@@ -384,9 +384,14 @@ public class UserApi {
     public String notice(HttpServletRequest request, Integer id) throws IOException, ServletException {
 
         Notice notice = noticeService.selectByPrimaryKey(id);
-        notice.setContent(notice.getContent().replaceAll("\r\n", "<br/>").replaceAll("\n", "<br/>"));
+
+        if(notice.getContent() != null){
+            notice.setContent(notice.getContent().replaceAll("\r\n", "<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;")
+                    .replaceAll("\n", "<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"));
+        }
         request.setAttribute("notice", notice);
         return "user/notice";
 
     }
+
 }
