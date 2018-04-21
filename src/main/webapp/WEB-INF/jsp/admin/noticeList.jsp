@@ -22,64 +22,31 @@
     <script src="js/side.js" type="text/javascript"></script>
     <script type="text/javascript" src="bootstrap/bootstrap.min.js"></script>
     <script type="text/javascript" src="layer/layer.js"></script>
-    <script src="js/laydate/laydate.js"></script>
     <title></title>
-
+    <h3 style="text-align: center;color: #FF6600;display: block;font-size: 1.17em;-webkit-margin-before: 1em;-webkit-margin-after: 1em;-webkit-margin-start: 0px;-webkit-margin-end: 0px;font-weight: bold;">
+        ${notice.title}
+    </h3>
 </head>
 <body onload="message()">
 <!-- MainForm -->
-<div id="MainForm">
+<div id="MainForm" style="margin:0 auto;width:60%;margin-top:50px;">
     <div class="form_boxA">
-        <h2>成果库</h2>
-
-        <div class="input-group">
-            <span class="input-group-addon" id="basic-addon1">成果名称</span>
-            <input class="form-control" placeholder="请输入成果名称" id="cname">
-            <span class="input-group-addon" id="basic-addon2">成果类型</span>
-            <select class="form-control" id="ctype">
-                <option value="-1" selected="selected">全部</option>
-                <option value="理论成果">理论成果</option>
-                <option value="科技创新">科技创新</option>
-                <option value="科学成果">科学成果</option>
-            </select>
-            <span class="input-group-addon" id="basic-addon3">年份</span>
-            <input class="form-control" id="ctime"  onclick="laydate()">
-
-            <span class="input-group-btn">
-                <button class="btn btn-primary" type="button" onclick="query()">查询</button>
-            </span>
-        </div>
 
         <table cellpadding="0" cellspacing="0">
             <tr>
                 <th>序号</th>
-                <th>成果名称</th>
-                <th>类型</th>
-                <th>领域</th>
-                <th>开始时间</th>
-                <th>合作单位</th>
-                <th>材料附件</th>
+                <th>公告标题</th>
+                <th>发布时间</th>
                 <th>操作</th>
             </tr>
 
             <c:forEach items="${list}" var="bean" varStatus="index">
-                <tr class="bgcD">
-                <td>${index.index + (page.pageNum - 1) * 10  + 1}</td>
-                <td>${bean.name}</td>
-                <td>${bean.type}</td>
-                <td>${bean.domain}</td>
-                <td>${bean.startTime}</td>
-                <td>${bean.unit}</td>
-                <c:if test="${empty bean.filePath or bean.filePath eq ''}">
-                    <td>无</td>
-                </c:if>
-                <c:if test="${not empty bean.filePath and bean.filePath ne ''}">
-                    <td><a href="user/uploadFile?filePath=${bean.filePath}">附件下载</a></td>
-                </c:if>
-
-                <td><a href="#" data-toggle="modal" data-target="#ViewModal" onclick="view('${bean.id}')">查看</a>
+                <tr>
+                    <td>${index.index + (page.pageNum - 1) * 10  + 1}</td>
+                    <td><a href="admin/notice?id=${bean.id}">${bean.title}</a></td>
+                    <td>${bean.pubTime}</td>
+                    <td><a href="admin/delNotice?id=${bean.id}">删除</a></td>
                 </tr>
-
             </c:forEach>
 
         </table>
@@ -89,13 +56,13 @@
 </div>
 
 <ul id="PageNum">
-    <li><a href="user/allResults?pageNum=${page.firstPage}">首页</a></li>
-    <li><a href="user/allResults?pageNum=${page.prePage}">上一页</a></li>
+    <li><a href="admin/noticeList?pageNum=${page.firstPage}">首页</a></li>
+    <li><a href="admin/noticeList?pageNum=${page.prePage}">上一页</a></li>
     <c:forEach var="num" step="1" begin="1" end="${page.pages}">
-        <li><a href="user/allResults?pageNum=${num}">${num}</a></li>
+        <li><a href="admin/noticeList?pageNum=${num}">${num}</a></li>
     </c:forEach>
-    <li><a href="user/allResults?pageNum=${page.nextPage}">下一页</a></li>
-    <li><a href="user/allResults?pageNum=${page.lastPage}">尾页</a></li>
+    <li><a href="admin/noticeList?pageNum=${page.nextPage}">下一页</a></li>
+    <li><a href="admin/noticeList?pageNum=${page.lastPage}">尾页</a></li>
 </ul>
 
 <div class="modal fade" id="ViewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -111,7 +78,7 @@
                 <div class="row">
                     <div class="col-md-10">
                         <div>
-                            <br/>负责人：<span id="charge"></span><br/>
+                            <br/>负责人：<span>${user.name}</span><br/>
                         </div>
                     </div>
                     <div class="col-md-10">
@@ -159,6 +126,11 @@
                             <br/>合作单位：<span id="unit"></span><br/>
                         </div>
                     </div>
+                    <div class="col-md-10">
+                        <div>
+                            <br/>审核评语：<span id="comment"></span><br/>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -178,46 +150,7 @@
         }
     }
 
-    function view(id) {
 
-        $.ajax({
-            type: "POST",
-            url: "user/getResultsById",
-            data: {
-                id: id
-            },
-            dataType: "json",
-            success: function(data){
-                console.log(data);
-                $("#name").text(data.name);
-                $("#charge").text(data.charge);
-                $("#type").text(data.type);
-                $("#domain").text(data.domain);
-                $("#description").text(data.description);
-                $("#startTime").text(data.startTime);
-                $("#endTime").text(data.endTime);
-                $("#coin").text(data.coin);
-                $("#unit").text(data.unit);
-                $("#group").text(data.group);
-
-            },
-            error:function () {
-                layer.alert("error!");
-            }
-
-        })
-    }
-
-
-    function query(){
-        var type = $("#ctype").val();
-        var name = $("#cname").val();
-        var time = $("#ctime").val();
-
-        var url = encodeURI(encodeURI("user/allResults?type=" + type + "&name=" + name + "&startTime=" + time));
-        window.location.href = url;
-
-    }
 
 </script>
 </html>

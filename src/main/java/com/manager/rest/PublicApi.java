@@ -26,6 +26,11 @@ public class PublicApi {
         return "user/head";
     }
 
+    @RequestMapping("/addNoticeJsp")
+    public String addNoticeJsp(){
+        return "admin/addNotice";
+    }
+
     @RequestMapping("/uHead2Jsp")
     public String head2(){
         return "user/head2";
@@ -34,6 +39,16 @@ public class PublicApi {
     @RequestMapping("/uLeftJsp")
     public String left(){
         return "user/left";
+    }
+
+    @RequestMapping("/aLeftJsp")
+    public String aLeft(){
+        return "admin/left";
+    }
+
+    @RequestMapping("/aAddResultsJsp")
+    public String aAddResultsJsp(){
+        return "admin/addResults";
     }
 
     @RequestMapping("/uMainJsp")

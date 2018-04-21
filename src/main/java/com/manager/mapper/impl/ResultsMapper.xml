@@ -7,6 +7,7 @@
         <result column="activity_id" jdbcType="INTEGER" property="activityId" />
         <result column="name" jdbcType="VARCHAR" property="name" />
         <result column="type" jdbcType="VARCHAR" property="type" />
+        <result column="charge" jdbcType="VARCHAR" property="charge" />
         <result column="domain" jdbcType="VARCHAR" property="domain" />
         <result column="start_time" jdbcType="VARCHAR" property="startTime" />
         <result column="end_time" jdbcType="VARCHAR" property="endTime" />
@@ -59,9 +60,7 @@
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List" />
-        ,
-        <include refid="Blob_Column_List" />
+        *
         from results
         where id = #{id,jdbcType=INTEGER}
     </select>
@@ -126,6 +125,9 @@
             <if test="description != null">
                 description,
             </if>
+            <if test="charge != null">
+                charge,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -169,6 +171,9 @@
             </if>
             <if test="description != null">
                 #{description,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="charge != null">
+                #{charge,jdbcType=LONGVARCHAR},
             </if>
         </trim>
     </insert>

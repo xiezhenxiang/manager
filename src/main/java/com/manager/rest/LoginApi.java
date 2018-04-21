@@ -59,7 +59,7 @@ public class LoginApi {
             }else{
                 para = ls.get(0);
                 request.getSession().setAttribute("admin", para);
-                return "";
+                return "admin/index";
             }
         }
 

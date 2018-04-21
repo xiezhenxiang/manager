@@ -55,6 +55,7 @@ public class UserApi {
         }
 
         results.setUserId(user.getId());
+        results.setCharge(user.getName());
         resultsService.insertSelective(results);
         request.setAttribute("message", "申报成功，等待审核！");
         return "user/addResults";
@@ -366,7 +367,7 @@ public class UserApi {
 
     }
 
-    @RequestMapping("noticeList")
+    @RequestMapping("/noticeList")
     public String noticeList(HttpServletRequest request, @RequestParam(required=true,defaultValue="1") Integer pageNum) throws IOException, ServletException {
 
         List<Notice> ls = new ArrayList<Notice>();
@@ -380,7 +381,7 @@ public class UserApi {
 
     }
 
-    @RequestMapping("notice")
+    @RequestMapping("/notice")
     public String notice(HttpServletRequest request, Integer id) throws IOException, ServletException {
 
         Notice notice = noticeService.selectByPrimaryKey(id);
