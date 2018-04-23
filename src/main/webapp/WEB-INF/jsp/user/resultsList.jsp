@@ -285,39 +285,6 @@
     </div>
 </div>
 
-<%--<div class="modal fade" id="checkModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content" style = "width:70%">
-
-            <div class="page ">
-                <!-- 会员注册页面样式 -->
-                <div class="banneradd bor">
-                    <div class="baTopNo">
-                        <span>审核</span>
-                    </div>
-                    <div class="baBody" style="margin-left:50px">
-
-                        <div class="bbD">
-                            <select class="input1" id="check">
-                            <option value="1" select="selected">通过</option>
-                            <option value="2">不通过</option>
-                        </select>
-                        </div><br/>
-                        <b>评语：</b>
-                        <div class="bbD" style="margin-top: 0px">
-                             <textarea rows="5" style="width:300px;" id="comment"></textarea>
-                        </div>
-                    </div><br/>
-                    <div class="modal-footer">
-                        <center><button type="button" class="btn btn-primary" data-dismiss="modal" onclick="check()">确定</button></center>
-                    </div>
-                </div>
-
-                <!-- 会员注册页面样式end -->
-            </div>
-        </div>
-    </div>
-</div>--%>
 
 
 </body>
@@ -402,7 +369,7 @@
                 }else if(check == "2"){
                     comment += "审核不通过； "
                 }
-                comment += "${data.comment}";
+                comment += data.comment;
                 $("#comment").text(comment);
             },
             error:function () {

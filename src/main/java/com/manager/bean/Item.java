@@ -34,6 +34,16 @@ public class Item{
 
     private String comment;
 
+    private String charge;
+
+    public String getCharge() {
+        return charge;
+    }
+
+    public void setCharge(String charge) {
+        this.charge = charge;
+    }
+
     public String getName() {
         return name;
     }

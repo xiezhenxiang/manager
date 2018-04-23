@@ -171,7 +171,7 @@ public class UserApi {
             FileUtils.copyInputStreamToFile(file.getInputStream(), tempFile);
             results.setFilePath(tempFile.getAbsolutePath().replaceAll("\\\\", "/"));
         }
-
+        results.setCheck(0);
         resultsService.updateByPrimaryKeySelective(results);
         request.setAttribute("message", "修改成功！");
         return resultsList(1, new Results(), request);
@@ -245,6 +245,7 @@ public class UserApi {
         }
 
         item.setUserId(user.getId());
+        item.setCharge(user.getName());
         itemService.insertSelective(item);
         request.setAttribute("message", "申报成功，请等待审核！");
         return activityList(request, 1, new Activity());

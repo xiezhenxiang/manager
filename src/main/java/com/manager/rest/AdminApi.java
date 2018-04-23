@@ -105,4 +105,89 @@ public class AdminApi {
         return "admin/notice";
 
     }
+
+    @RequestMapping("/resultsList")
+    public String resultsList(@RequestParam(required=true,defaultValue="1") Integer pageNum, HttpServletRequest request, Results para) throws IOException {
+
+        if(para.getType() != null){
+            para.setType(URLDecoder.decode(para.getType(), "utf-8"));
+        }
+        if(para.getName() != null && !para.getName().trim().equals("")){
+            para.setName(URLDecoder.decode(para.getName(), "utf-8"));
+        }
+        if(para.getType() != null && para.getType().equals("-1")){
+            para.setType(null);
+        }
+
+        List<Results> ls = new ArrayList<Results>();
+        para.setCheck(0);
+        PageHelper.startPage(pageNum, 10);
+        ls = resultsService.selectBySelective(para);
+
+        PageInfo<Results> pageInfo =new PageInfo<Results>(ls);
+        request.setAttribute("page", pageInfo);
+        request.setAttribute("list", ls);
+        return "admin/resultsList";
+    }
+
+    @RequestMapping("/checkResults")
+    public String checkResults(HttpServletRequest request, Integer check, String comment, Integer id) throws IOException {
+
+        if(comment != null && !comment.equals("")){
+            comment = URLDecoder.decode(comment, "UTF-8");
+        }
+
+        Results res = new Results();
+        res.setId(id);
+        res.setCheck(check);
+        res.setComment(comment);
+        resultsService.updateByPrimaryKeySelective(res);
+
+        request.setAttribute("message", "审核成功！");
+        return resultsList(1, request, new Results());
+    }
+
+    @RequestMapping("/itemList")
+    public String itemList(HttpServletRequest request, @RequestParam(required=true,defaultValue="1") Integer pageNum
+            , Item para) throws IOException, ServletException {
+
+
+        if(para.getName() != null && !para.getName().trim().equals("")){
+            para.setName(URLDecoder.decode(para.getName(), "utf-8"));
+        }
+        if(para.getType() != null && para.getType().equals("-1")){
+            para.setType(null);
+        }
+        if(para.getType() != null && !para.getType().equals("-1")){
+            para.setType(URLDecoder.decode(para.getType(), "utf-8"));
+        }
+        if(para.getCheck() == null)
+            para.setCheck(-1);
+        List<Item> ls = new ArrayList<Item>();
+        PageHelper.startPage(pageNum, 10);
+        ls = itemService.selectBySelective(para);
+
+        PageInfo<Item> pageInfo =new PageInfo<Item>(ls);
+        request.setAttribute("page", pageInfo);
+        request.setAttribute("list", ls);
+
+        return "admin/itemList";
+    }
+
+    @RequestMapping("/checkItem")
+    public String checkItem(HttpServletRequest request, Integer check, String comment, Integer id) throws IOException, ServletException {
+
+        if(comment != null && !comment.equals("")){
+            comment = URLDecoder.decode(comment, "UTF-8");
+        }
+
+        Item item = new Item();
+        item.setId(id);
+        item.setCheck(check);
+        item.setComment(comment);
+        itemService.updateByPrimaryKeySelective(item);
+
+        request.setAttribute("message", "审核成功！");
+        return itemList(request, 1, new Item());
+    }
 }

@@ -14,6 +14,7 @@
     <result column="coin" jdbcType="VARCHAR" property="coin" />
     <result column="group" jdbcType="VARCHAR" property="group" />
     <result column="unit" jdbcType="VARCHAR" property="unit" />
+    <result column="charge" jdbcType="VARCHAR" property="charge" />
     <result column="check" jdbcType="INTEGER" property="check" />
     <result column="filePath" jdbcType="VARCHAR" property="filePath" />
     <result column="filePath2" jdbcType="VARCHAR" property="filePath2" />
@@ -52,7 +53,10 @@
     <if test='startTime != null and startTime != ""'>
       AND #{startTime} > start_time AND end_time > #{startTime}
     </if>
-    <if test="check != null">
+    <if test="check != null and check == -1">
+      AND 2 > `check`
+    </if>
+    <if test="check != null and check != -1">
       AND `check` = #{check}
     </if>
   </select>
@@ -72,12 +76,12 @@
          where userId = #{userId,jdbcType=INTEGER} AND activityId = #{activityId}
     </delete>
   <insert id="insert" parameterType="com.manager.bean.Item">
-    insert into item (id, end_time, type, 
+    insert into item (id, end_time, type, charge,
       activityId, userId, domain, 
       start_time, coin, group, 
       unit, check, filePath, filePath2,
       description)
-    values (#{id,jdbcType=INTEGER}, #{endTime,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{endTime,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{charge};
       #{activityId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{domain,jdbcType=VARCHAR}, 
       #{startTime,jdbcType=VARCHAR}, #{coin,jdbcType=VARCHAR}, #{group,jdbcType=VARCHAR}, 
       #{unit,jdbcType=VARCHAR}, #{check,jdbcType=INTEGER}, #{filePath,jdbcType=VARCHAR}, #{filePath2,jdbcType=VARCHAR},
@@ -132,6 +136,9 @@
       <if test="description != null">
         description,
       </if>
+      <if test="charge != null">
+        charge,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -179,6 +186,9 @@
       <if test="description != null">
         #{description,jdbcType=LONGVARCHAR},
       </if>
+      <if test="charge != null">
+        #{charge,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.manager.bean.Item">
@@ -225,6 +235,9 @@
         </if>
       <if test="description != null">
         description = #{description,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="charge != null">
+        charge = #{charge,jdbcType=VARCHAR},
       </if>
       id = #{id},
     </set>

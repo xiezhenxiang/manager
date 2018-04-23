@@ -51,16 +51,16 @@
 
         <dl class="system_log">
             <dt>
-                <img class="icon1" src="img/coin01.png" /><img class="icon2" src="img/coin02.png" /> 科研审批
+                <img class="icon1" src="img/coin01.png" /><img class="icon2" src="img/coin02.png" /> 审批管理
                 <img class="icon3"src="img/coin19.png" /><img class="icon4" src="img/coin20.png" />
             </dt>
             <dd>
                 <img class="coin11" src="img/coin111.png" /><img class="coin22" src="img/coin222.png" />
-                <a href="user/noticeList" target="main" class="cks">成果审批</a><img class="icon5" src="img/coin21.png" />
+                <a href="admin/resultsList" target="main" class="cks">成果审批</a><img class="icon5" src="img/coin21.png" />
             </dd>
             <dd>
                 <img class="coin11" src="img/coin111.png" /><img class="coin22" src="img/coin222.png" />
-                <a href="user/noticeList" target="main" class="cks">项目审批</a><img class="icon5" src="img/coin21.png" />
+                <a href="admin/itemList" target="main" class="cks">项目审批</a><img class="icon5" src="img/coin21.png" />
             </dd>
         </dl>
         <dl class="system_log">
