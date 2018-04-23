@@ -50,7 +50,10 @@
         <if test="domain != null">
             AND domain = #{domain}
         </if>
-        <if test="check != null">
+        <if test="check != null and check == 5">
+            AND (`check` = 1 OR `check` = 3)
+        </if>
+        <if test="check != null and check != 5">
             AND `check` = #{check}
         </if>
         <if test='startTime != null and startTime != ""'>

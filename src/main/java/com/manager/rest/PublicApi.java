@@ -22,7 +22,7 @@ public class PublicApi {
     }
 
     @RequestMapping("/uHeadJsp")
-    public String head(){
+    public String uHeadJsp(){
         return "user/head";
     }
 
@@ -32,17 +32,17 @@ public class PublicApi {
     }
 
     @RequestMapping("/uHead2Jsp")
-    public String head2(){
+    public String uHead2Jsp(){
         return "user/head2";
     }
 
     @RequestMapping("/uLeftJsp")
-    public String left(){
+    public String uLeftJsp(){
         return "user/left";
     }
 
     @RequestMapping("/aLeftJsp")
-    public String aLeft(){
+    public String aLeftJsp(){
         return "admin/left";
     }
 
@@ -52,12 +52,12 @@ public class PublicApi {
     }
 
     @RequestMapping("/uMainJsp")
-    public String main(){
+    public String uMainJsp(){
         return "user/main";
     }
 
     @RequestMapping("/addResultsJsp")
-    public String addResults(){
+    public String addResultsJsp(){
         return "user/addResults";
     }
 
@@ -69,5 +69,10 @@ public class PublicApi {
     @RequestMapping("/contactJsp")
     public String contactJsp(){
         return "user/contact";
+    }
+
+    @RequestMapping("/addActivityJsp")
+    public String addActivityJsp(){
+        return "admin/addActivity";
     }
 }

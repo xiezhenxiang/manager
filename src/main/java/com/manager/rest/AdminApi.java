@@ -187,6 +187,27 @@ public class AdminApi {
         item.setComment(comment);
         itemService.updateByPrimaryKeySelective(item);
 
+        if(check == 3){
+            Item bean = itemService.selectByPrimaryKey(id);
+            Results results = new Results();
+            results.setComment(bean.getComment());
+            results.setCheck(1);
+            results.setCharge(bean.getCharge());
+            results.setType(bean.getType());
+            results.setUserId(bean.getUserId());
+            results.setFilePath(bean.getFilePath2());
+            results.setName(bean.getName());
+            results.setActivityId(bean.getActivityId());
+            results.setCoin((Double.parseDouble(bean.getCoin())));
+            results.setDescription(bean.getDescription());
+            results.setDomain(bean.getDomain());
+            results.setEndTime(bean.getEndTime());
+            results.setGroup(bean.getGroup());
+            results.setStartTime(bean.getStartTime());
+            results.setUnit(bean.getUnit());
+            resultsService.insertSelective(results);
+        }
+
         request.setAttribute("message", "审核成功！");
         return itemList(request, 1, new Item());
     }

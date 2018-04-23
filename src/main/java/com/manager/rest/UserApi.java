@@ -92,7 +92,7 @@ public class UserApi {
     @RequestMapping("/allResults")
     public String allResults(@RequestParam(required=true,defaultValue="1") Integer pageNum, Results para, HttpServletRequest request) throws IOException {
 
-        para.setCheck(1);
+        para.setCheck(5);
         List<Results> ls = new ArrayList<Results>();
         if(para.getType() != null){
             para.setType(URLDecoder.decode(para.getType(), "utf-8"));
@@ -137,7 +137,7 @@ public class UserApi {
     }
 
     @RequestMapping("/getResultsById")
-    public void getResultsById(HttpServletResponse response, Integer id) throws IOException {
+        public void getResultsById(HttpServletResponse response, Integer id) throws IOException {
 
         response.setContentType("UTF-8");
         Results results = resultsService.selectByPrimaryKey(id);
