@@ -70,6 +70,9 @@
       <if test="description != null">
         description,
       </if>
+      <if test="filePath != null">
+        filePath,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -90,8 +93,14 @@
       <if test="description != null">
         #{description,jdbcType=LONGVARCHAR},
       </if>
+      <if test="filePath != null">
+        #{filePath,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
+  <select id="getApplyCount" parameterType="int" resultType="int">
+    SELECT COUNT(*) FROM item WHERE activityId = #{id}
+  </select>
   <update id="updateByPrimaryKeySelective" parameterType="com.manager.bean.Activity">
     update activity
     <set>

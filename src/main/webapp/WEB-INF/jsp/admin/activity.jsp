@@ -28,12 +28,12 @@
 <body onload="message()">
 <!-- MainForm -->
 <div id="MainForm" style="margin:0 auto;width:60%;margin-top:40px;padding:40px;">
-    <a href="admin/noticeList">返回列表</a>
+    <a href="admin/activityList">返回列表</a>
     <h3 style="text-align: center;color: #FF6600;display: block;font-size: 1.17em;-webkit-margin-before: 1em;-webkit-margin-after: 1em;-webkit-margin-start: 0px;-webkit-margin-end: 0px;font-weight: bold;">
-        ${notice.title}<br/>
+        ${bean.name}<br/>
     </h3>
-    ${notice.content}
-    <br/><br/><a href="admin/noticeList">返回列表</a>
+    ${bean.description}
+    <br/><br/><a href="admin/activityList">返回列表</a>
 </div>
 
 </body>

@@ -2,6 +2,7 @@ package com.manager.mapper;
 
 import com.manager.bean.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -22,4 +23,6 @@ public interface UserMapper {
     int updateByPrimaryKey(User record);
 
     List<User> SelectUserSelective(User para);
+
+    List<User> selectByKeyword(@Param("keyword") String keyword);
 }

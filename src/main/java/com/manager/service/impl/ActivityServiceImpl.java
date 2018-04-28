@@ -56,4 +56,8 @@ public class ActivityServiceImpl implements ActivityService {
         return activityMapper.selectBySelective(para);
     }
 
+    @Override
+    public int getApplyCount(Integer id) {
+        return activityMapper.getApplyCount(id);
+    }
 }

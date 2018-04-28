@@ -22,7 +22,16 @@
     from admin
     where id = #{id,jdbcType=INTEGER}
   </select>
-
+  <select id="selectByKeyWord" resultMap="BaseResultMap">
+    select * from admin where 1 = 1
+    <if test='keyword != null and keyword != ""'>
+        AND(
+          account LIKE concat("%", #{keyword} , "%")
+          OR name LIKE concat("%", #{keyword} , "%")
+          OR phone LIKE concat("%", #{keyword} , "%")
+        )
+    </if>
+  </select>
   <select id="selectAdminSelective" parameterType="com.manager.bean.Admin" resultMap="BaseResultMap">
     SELECT * FROM admin WHERE 1 = 1
     <if test="account != null">

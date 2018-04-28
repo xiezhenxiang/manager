@@ -3,6 +3,7 @@ package com.manager.service.impl;
 import com.manager.bean.Admin;
 import com.manager.mapper.ActivityMapper;
 import com.manager.mapper.AdminMapper;
+import com.manager.mapper.UserMapper;
 import com.manager.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,8 @@ public class AdminServiceImpl implements AdminService{
 
     @Autowired
     private AdminMapper adminMapper;
+    @Autowired
+    private UserMapper userMapper;
 
 
     @Override
@@ -56,5 +59,13 @@ public class AdminServiceImpl implements AdminService{
         return adminMapper.selectAdminSelective(para);
     }
 
+    @Override
+    public void deleteUser(Integer id) {
+        userMapper.deleteByPrimaryKey(id);
+    }
 
+    @Override
+    public List<Admin> selectByKeyword(String keyword) {
+        return adminMapper.selectByKeyWord(keyword);
+    }
 }

@@ -20,4 +20,8 @@ public interface AdminService {
     int updateByPrimaryKey(Admin record);
 
     List<Admin> selectAdminSelective(Admin para);
+
+    void deleteUser(Integer id);
+
+    List<Admin> selectByKeyword(String keyword);
 }

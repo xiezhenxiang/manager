@@ -18,6 +18,16 @@ public class Activity {
 
     private String status;
 
+    private int applyCount;
+
+    public int getApplyCount() {
+        return applyCount;
+    }
+
+    public void setApplyCount(int applyCount) {
+        this.applyCount = applyCount;
+    }
+
     public String getStatus() {
         return status;
     }

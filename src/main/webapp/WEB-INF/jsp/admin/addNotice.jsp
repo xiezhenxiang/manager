@@ -41,7 +41,7 @@
                         </div>
                         <div class="bbD">
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;公告内容：<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<textarea name="content" rows="20" id="content" style="width: 700px"></textarea>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<textarea name="content" rows="20" id="content" style="width: 630px;margin-left:68px"></textarea>
                         </div>
                         <div class="bbD">
                             <p class="bbDP">

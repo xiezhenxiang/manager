@@ -21,4 +21,6 @@ public interface ActivityMapper {
     int updateByPrimaryKeySelective(Activity record);
 
     int updateByPrimaryKey(Activity record);
+
+    int getApplyCount(Integer id);
 }

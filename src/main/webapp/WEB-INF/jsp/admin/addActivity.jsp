@@ -46,12 +46,10 @@
                         </select>
                         </div>
                         <div class="bbD">
-                            &nbsp;&nbsp;&nbsp;&nbsp;活动名称：<input type="text" class="input1" name = "name" id="domain"/>
+                            &nbsp;&nbsp;&nbsp;&nbsp;活动名称：<input type="text" class="input1" name = "name" id="name"/>
                         </div>
 
-                        <div class="bbD">
-                            &nbsp;&nbsp;&nbsp;&nbsp;活动描述：<input type="text" class="input1" name = "description" id="description"/>
-                        </div>
+
                     </div>
                     <div style="display: inline-block">
                         <div class="bbD">
@@ -61,6 +59,10 @@
                             &nbsp;&nbsp;&nbsp;&nbsp;结束时间：<input type="text" class="input1" name = "endTime" id="endTime" onclick="laydate()"/>
                         </div>
 
+                    </div>
+                    <br/>&nbsp;&nbsp;&nbsp;&nbsp;活动详情：
+                    <div class="bbD">
+                        &nbsp;&nbsp;&nbsp;&nbsp;<textarea name="description" id="description" rows="15" style="width: 695px;margin-left:68px"></textarea>
                     </div>
                     <div class="bbD">
                         &nbsp;&nbsp;&nbsp;&nbsp;材料附件：<input type="file" name = "file" id="file"/>
@@ -86,6 +88,23 @@
         if(message != null && message != ""){
             alert(message);
         }
+    }
+
+    function validation() {
+        var name = $("#name").val().trim();
+        var description = $("#description").val().trim();
+        var startTime = $("#startTime").val().trim();
+        var endTime = $("#endTime").val().trim();
+        var path = $("#file").val() + "";
+
+        if(name == "" || description == "" || startTime == "" || endTime == ""){
+            layer.alert("请补全输入信息！");
+            return false;
+        }else if(path != "" && path.substring(path.lastIndexOf(".") + 1) != "rar" && path.substring(path.lastIndexOf(".") + 1) != "zip"){
+            layer.alert("仅支持rar或zip格式材料上传，请压缩文件后重试！");
+            return false;
+        }
+        return true;
     }
 
 </script>

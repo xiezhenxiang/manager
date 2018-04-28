@@ -2,6 +2,7 @@ package com.manager.mapper;
 
 import com.manager.bean.Admin;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 @Mapper
@@ -21,4 +22,6 @@ public interface AdminMapper {
     int updateByPrimaryKey(Admin record);
 
     List<Admin> selectAdminSelective(Admin para);
+
+    List<Admin> selectByKeyWord(@Param("keyword") String keyword);
 }

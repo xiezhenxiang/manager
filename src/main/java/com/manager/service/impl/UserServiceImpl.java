@@ -54,4 +54,9 @@ public class UserServiceImpl implements UserService {
     public List<User> SelectUserSelective(User para) {
         return userMapper.SelectUserSelective(para);
     }
+
+    @Override
+    public List<User> selectByKeyword(String keyword) {
+        return userMapper.selectByKeyword(keyword);
+    }
 }

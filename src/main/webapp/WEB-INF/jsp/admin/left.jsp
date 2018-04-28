@@ -74,7 +74,7 @@
             </dd>
             <dd>
                 <img class="coin11" src="img/coin111.png" /><img class="coin22" src="img/coin222.png" />
-                <a href="user/noticeList" target="main" class="cks">活动列表</a><img class="icon5" src="img/coin21.png" />
+                <a href="admin/activityList" target="main" class="cks">活动列表</a><img class="icon5" src="img/coin21.png" />
             </dd>
         </dl>
         <dl class="system_log">
@@ -84,7 +84,18 @@
             </dt>
             <dd>
                 <img class="coin11" src="img/coin111.png" /><img class="coin22" src="img/coin222.png" />
-                <a href="user/noticeList" target="main" class="cks">用户列表</a><img class="icon5" src="img/coin21.png" />
+                <a href="admin/userList" target="main" class="cks">用户列表</a><img class="icon5" src="img/coin21.png" />
+            </dd>
+        </dl>
+
+        <dl class="system_log">
+            <dt>
+                <img class="icon1" src="img/coin01.png" /><img class="icon2" src="img/coin02.png" /> 权限管理
+                <img class="icon3"src="img/coin19.png" /><img class="icon4" src="img/coin20.png" />
+            </dt>
+            <dd>
+                <img class="coin11" src="img/coin111.png" /><img class="coin22" src="img/coin222.png" />
+                <a href="admin/adminList" target="main" class="cks">权限分配</a><img class="icon5" src="img/coin21.png" />
             </dd>
         </dl>
         <dl class="system_log">
@@ -94,7 +105,7 @@
             </dt>
             <dd>
                 <img class="coin11" src="img/coin111.png" /><img class="coin22" src="img/coin222.png" />
-                <a href="user/selfInfo" target="main" class="cks">修改密码</a><img class="icon5" src="img/coin21.png" />
+                <a href="admin/selfInfo" target="main" class="cks">修改密码</a><img class="icon5" src="img/coin21.png" />
             </dd>
             <dd onclick="exit()">
                 <img class="coin11" src="img/coin111.png" /><img class="coin22" src="img/coin222.png" />
@@ -109,7 +120,6 @@
 
 </body>
 
-<
 <script>
     function exit() {
 

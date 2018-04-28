@@ -153,4 +153,17 @@
       unit = #{unit,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectByKeyword" resultMap="BaseResultMap">
+    SELECT * FROM user WHERE 1 = 1
+    <if test='keyword != null and keyword != ""'>
+      AND(
+        account LIKE concat("%", concat(#{keyword}, "%"))
+        OR name LIKE concat("%", concat(#{keyword}, "%"))
+        OR sex LIKE concat("%", concat(#{keyword}, "%"))
+        OR phone LIKE concat("%", concat(#{keyword}, "%"))
+        OR email LIKE concat("%", concat(#{keyword}, "%"))
+        OR unit LIKE concat("%", concat(#{keyword}, "%"))
+      )
+    </if>
+  </select>
 </mapper>

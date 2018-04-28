@@ -28,11 +28,11 @@
     <div class="page ">
         <!-- 修改密码页面样式 -->
         <div class="bacen">
-            <form action="user/updateUser" method="post" onsubmit="return validation()">
-                <input type="hidden" value="${user.id}" name="id">
+            <form action="admin/updateAdmin" method="post" onsubmit="return validation()">
+                <input type="hidden" value="${admin.id}" name="id">
                 <div class="bbD">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用户UID：&nbsp;&nbsp;&nbsp;&nbsp;${user.id}</div>
-                <div class="bbD">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用户名：&nbsp;&nbsp;&nbsp;&nbsp;${user.name}</div>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用户UID：&nbsp;&nbsp;&nbsp;&nbsp;${admin.id}</div>
+                <div class="bbD">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用户名：&nbsp;&nbsp;&nbsp;&nbsp;${admin.name}</div>
                 <div class="bbD">
                     &nbsp;&nbsp;&nbsp;&nbsp;输入原密码：<input type="password" class="input3" id="pwd1" />
                 </div>
@@ -65,7 +65,7 @@
     }
 
     function validation() {
-        var pwd = "${user.pwd}";
+        var pwd = "${admin.pwd}";
         var pwd1 = $("#pwd1").val().trim();
         var pwd2 = $("#pwd2").val().trim();
         var pwd3 = $("#pwd3").val().trim();

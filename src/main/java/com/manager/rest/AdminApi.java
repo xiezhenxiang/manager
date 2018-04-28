@@ -34,6 +34,10 @@ public class AdminApi {
     ItemService itemService;
     @Autowired
     NoticeService noticeService;
+    @Autowired
+    ActivityService activityService;
+    @Autowired
+    UserService userService;
 
 
     @RequestMapping("/addResults")
@@ -211,4 +215,164 @@ public class AdminApi {
         request.setAttribute("message", "审核成功！");
         return itemList(request, 1, new Item());
     }
+
+    @RequestMapping("/addActivity")
+    public String addActivity(HttpServletRequest request, Activity activity, MultipartFile file) throws IOException {
+        Admin admin = (Admin) request.getSession().getAttribute("admin");
+
+        if(!file.getOriginalFilename().equals("")){
+
+            File dataDir = new File("C:/bsData");
+
+            if(!dataDir.exists()){
+                dataDir.mkdir();
+            }
+            File tempFile = new File("C:/bsData/" + "_" + activity.getName()
+                    + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".")));
+            FileUtils.copyInputStreamToFile(file.getInputStream(), tempFile);
+            activity.setFilePath(tempFile.getAbsolutePath().replaceAll("\\\\", "/"));
+        }
+        activityService.insertSelective(activity);
+
+        request.setAttribute("message", "添加成功！");
+        return "admin/addActivity";
+    }
+
+    @RequestMapping("/activityList")
+    public String activityList(HttpServletRequest request, @RequestParam(required=true,defaultValue="1") Integer pageNum
+            , Activity para) throws IOException, ServletException {
+
+
+        if(para.getType() != null){
+            para.setType(URLDecoder.decode(para.getType(), "utf-8"));
+        }
+        if(para.getName() != null && !para.getName().trim().equals("")){
+            para.setName(URLDecoder.decode(para.getName(), "utf-8"));
+        }
+        if(para.getType() != null && para.getType().equals("-1")){
+            para.setType(null);
+        }
+
+        List<Activity> ls = new ArrayList<Activity>();
+        PageHelper.startPage(pageNum, 10);
+        ls = activityService.selectBySelective(para);
+
+        PageInfo<Activity> pageInfo =new PageInfo<Activity>(ls);
+
+        ls.forEach((Activity activity) ->{
+            int applyCount = activityService.getApplyCount(activity.getId());
+            activity.setApplyCount(applyCount);
+            int end = activity.getDescription().length() > 16 ? 16 :activity.getDescription().length();
+            activity.setDescription(activity.getDescription().substring(0, end) + (end == 16 ? "....." : ""));
+        });
+
+        request.setAttribute("page", pageInfo);
+        request.setAttribute("list", ls);
+
+        return "admin/activityList";
+    }
+
+    @RequestMapping("/activity")
+    public String activity(HttpServletRequest request, Integer id) throws IOException, ServletException {
+
+        Activity bean = activityService.selectByPrimaryKey(id);
+
+        if(bean.getDescription() != null){
+            bean.setDescription(bean.getDescription().replaceAll("\r\n", "<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;")
+                    .replaceAll("\n", "<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"));
+        }
+        request.setAttribute("bean", bean);
+        return "admin/activity";
+
+    }
+
+    @RequestMapping("/adminList")
+    public String adminList(HttpServletRequest request, @RequestParam(required=true,defaultValue="1") Integer pageNum
+            , String keyword) throws IOException, ServletException {
+
+
+        if(keyword != null){
+            keyword = URLDecoder.decode(keyword, "utf-8");
+        }
+
+        List<Admin> ls = new ArrayList<Admin>();
+        PageHelper.startPage(pageNum, 10);
+        ls = adminService.selectByKeyword(keyword);
+
+        PageInfo<Admin> pageInfo =new PageInfo<Admin>(ls);
+
+
+        request.setAttribute("page", pageInfo);
+        request.setAttribute("list", ls);
+
+        return "admin/adminList";
+    }
+
+    @RequestMapping("/delAdmin")
+    public String delAdmin(HttpServletRequest request, Integer id) {
+
+        adminService.deleteByPrimaryKey(id);
+        request.setAttribute("message", "删除成功！");
+        return "admin/adminList";
+    }
+
+
+    @RequestMapping("/updateAdmin")
+    public String updateAdmin(HttpServletRequest request, Admin para) throws IOException, ServletException {
+
+        adminService.updateByPrimaryKeySelective(para);
+        User user = userService.selectByPrimaryKey(para.getId());
+        request.setAttribute("message", "修改成功！");
+        return selfInfo(request);
+    }
+
+    @RequestMapping("/selfInfo")
+    public String selfInfo(HttpServletRequest request) throws IOException, ServletException {
+
+        Admin admin = (Admin)request.getSession().getAttribute("user");
+        request.setAttribute("admin", admin);
+
+        return "admin/selfInfo";
+
+    }
+
+    @RequestMapping("/userList")
+    public String userList(HttpServletRequest request, @RequestParam(required=true,defaultValue="1") Integer pageNum
+            , String keyword) throws IOException, ServletException {
+
+
+        if(keyword != null){
+            keyword = URLDecoder.decode(keyword, "utf-8");
+        }
+
+        List<User> ls = new ArrayList<User>();
+        PageHelper.startPage(pageNum, 10);
+        ls = userService.selectByKeyword(keyword);
+
+        PageInfo<User> pageInfo =new PageInfo<User>(ls);
+
+
+        request.setAttribute("page", pageInfo);
+        request.setAttribute("list", ls);
+
+        return "admin/userList";
+    }
+
+    @RequestMapping("/delUser")
+    public String userList(HttpServletRequest request, Integer id) {
+
+        adminService.deleteUser(id);
+        request.setAttribute("message", "删除成功！");
+        return "admin/userList";
+    }
+
+    @RequestMapping("/updateUser")
+    public String updateUser(HttpServletRequest request, User para) throws IOException, ServletException {
+
+        userService.updateByPrimaryKeySelective(para);
+        User user = userService.selectByPrimaryKey(para.getId());
+        request.setAttribute("message", "重置成功！");
+        return userList(request,1,null);
+    }
+
 }

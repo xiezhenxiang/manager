@@ -20,4 +20,6 @@ public interface ActivityService {
     int updateByPrimaryKey(Activity record);
 
     List<Activity> selectBySelective(Activity para);
+
+    int getApplyCount(Integer id);
 }
