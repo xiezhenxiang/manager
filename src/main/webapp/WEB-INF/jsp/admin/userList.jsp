@@ -24,9 +24,6 @@
     <script type="text/javascript" src="bootstrap/bootstrap.min.js"></script>
     <script type="text/javascript" src="layer/layer.js"></script>
     <title></title>
-    <h3 style="text-align: center;color: #FF6600;display: block;font-size: 1.17em;-webkit-margin-before: 1em;-webkit-margin-after: 1em;-webkit-margin-start: 0px;-webkit-margin-end: 0px;font-weight: bold;">
-        ${notice.title}
-    </h3>
 </head>
 <body onload="message()">
 
