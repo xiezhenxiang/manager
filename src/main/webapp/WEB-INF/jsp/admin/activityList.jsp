@@ -16,6 +16,9 @@
     <link rel="stylesheet" type="text/css" href="css/template/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="css/template/ionicons.min.css">
     <link rel="stylesheet" type="text/css" href="css/css.css" />
+    <style type="text/css" media=print>
+        .noprint{display : none }
+    </style>
     <link href="css/haiersoft.css" rel="stylesheet" type="text/css" media="screen,print" />
     <link href="css/print.css" rel="stylesheet" type="text/css"  media="print" />
     <script src="js/jquery-1.10.1.min.js"></script>
@@ -48,10 +51,13 @@
             <span class="input-group-btn">
                 <button class="btn btn-primary" type="button" onclick="query()">查询</button>
             </span>
+            <span class="input-group-btn">
+                <button class="btn btn-primary" type="button" onclick="print()">打印</button>
+            </span>
         </div>
-
+        <div id="con">
         <table cellpadding="0" cellspacing="0">
-            <tr>
+            <tr class="noprint">
                 <th>序号</th>
                 <th>活动名称</th>
                 <th>活动类型</th>
@@ -84,7 +90,7 @@
             </c:forEach>
 
         </table>
-
+        </div>
     </div>
 
 </div>
@@ -112,13 +118,22 @@
         var type = $("#ctype").val().trim();
         var name = $("#cname").val().trim();
         var time = $("#ctime").val().trim();
-        var url = encodeURI(encodeURI("user/activityList?type=" + type + "&name=" + name + "&startTime=" + time));
+        var url = encodeURI(encodeURI("admin/activityList?type=" + type + "&name=" + name + "&startTime=" + time));
         window.location.href = url;
 
     }
 
+    function print() {
 
-
+        var headstr = "<html><head><title></title></head><body>";
+        var footstr = "</body>";
+        var newstr = document.getElementById("con").innerHTML;
+        var oldstr = document.body.innerHTML;
+        document.body.innerHTML = oldstr;
+        window.print();
+        document.body.innerHTML = oldstr;
+        return false;
+    }
 
     function validation() {
         var name = $("#rname").val().trim();
@@ -142,14 +157,6 @@
         return true;
     }
 
-    function query(){
-        var type = $("#ctype").val().trim();
-        var name = $("#cname").val().trim();
-        var time = $("#ctime").val().trim();
-        var url = encodeURI(encodeURI("user/activityList?type=" + type + "&name=" + name + "&startTime=" +time));
-        window.location.href = url;
-
-    }
 
 </script>
 </html>
