@@ -58,7 +58,7 @@
                     <td>${bean.name}</td>
                     <td>${bean.account}</td>
                     <td>${bean.phone}</td>
-                    <td><a href="admin/delAdmin?id=${bean.id}">删除</a> | <a>权限</a></td>
+                    <td><a href="admin/delAdmin?id=${bean.id}">删除</a> | <a data-toggle="modal" data-target="#GlyPrivilegeModal"> 权限</a></td>
                 </tr>
             </c:forEach>
 
@@ -77,6 +77,47 @@
     <li><a href="admin/adminList?pageNum=${page.nextPage}">下一页</a></li>
     <li><a href="admin/adminList?pageNum=${page.lastPage}">尾页</a></li>
 </ul>
+
+<!-- 权限框 -->
+<div class="modal fade" id="GlyPrivilegeModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">权限分配</h4>
+            </div>
+            <table class="table table-bordered table-striped">
+                <tr>
+                    <th><input type="checkbox" name="check1" id="check1"
+                               value="1" />&nbsp;&nbsp;公告发布</th>
+                    <th><input type="checkbox" name="check2" id="check1"
+                               value="2" />&nbsp;&nbsp;成果审批</th>
+                    <th><input type="checkbox" name="check3" id="check1"
+                               value="3" />&nbsp;&nbsp;项目审批</th>
+                    <th><input type="checkbox" name="check4" id="check1"
+                               value="4" />&nbsp;&nbsp;活动添加</th>
+                </tr>
+                <tr>
+                    <th><input type="checkbox" name="check5" id="check1"
+                               value="5" />&nbsp;&nbsp;用户管理</th>
+                    <th><input type="checkbox" name="check6" id="check1"
+                               value="6" />&nbsp;&nbsp;公告编辑</th>
+                    <th><input type="checkbox" name="check7" id="check1"
+                               value="7" />&nbsp;&nbsp;活动编辑</th>
+                    <th><input type="checkbox" name="check8" id="check1"
+                               value="8" />&nbsp;&nbsp;权限管理</th>
+                </tr>
+            </table>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="setPrivilege">设置</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 </body>
 <script>
