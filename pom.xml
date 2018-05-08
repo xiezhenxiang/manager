@@ -6,7 +6,7 @@
 	<groupId>com.manager</groupId>
 	<artifactId>manager</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>manager</name>
 	<description>Demo project for Spring Boot</description>
@@ -76,6 +76,9 @@
             <version>2.4</version>
             <classifier>jdk15</classifier>
         </dependency>
+
+
+
 	</dependencies>
 
 	<build>
