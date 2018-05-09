@@ -18,10 +18,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Controller
 @RequestMapping("/user")
@@ -92,7 +90,7 @@ public class UserApi {
     @RequestMapping("/allResults")
     public String allResults(@RequestParam(required=true,defaultValue="1") Integer pageNum, Results para, HttpServletRequest request) throws IOException {
 
-        para.setCheck(5);
+        para.setCheck(1);
         List<Results> ls = new ArrayList<Results>();
         if(para.getType() != null){
             para.setType(URLDecoder.decode(para.getType(), "utf-8"));
@@ -190,17 +188,32 @@ public class UserApi {
         if(para.getName() != null && !para.getName().trim().equals("")){
             para.setName(URLDecoder.decode(para.getName(), "utf-8"));
         }
+        if(para.getState() != null && !para.getState().trim().equals("")){
+            para.setState(URLDecoder.decode(para.getState(), "utf-8"));
+        }
+        if(para.getStatus() != null && !para.getStatus().trim().equals("")){
+            para.setStatus(URLDecoder.decode(para.getStatus(), "utf-8"));
+        }
         if(para.getType() != null && para.getType().equals("-1")){
             para.setType(null);
         }
         List<Activity> ls = new ArrayList<Activity>();
+        List<Activity> ls2 = new ArrayList<Activity>();
         PageHelper.startPage(pageNum, 10);
         ls = activityService.selectBySelective(para);
+
+        ls.forEach((Activity activity) ->{
+            int applyCount = activityService.getApplyCount(activity.getId());
+            activity.setApplyCount(applyCount);
+            int end = activity.getDescription().length() > 16 ? 16 :activity.getDescription().length();
+            activity.setDescription(activity.getDescription().substring(0, end) + (end == 16 ? "....." : ""));
+        });
 
         PageInfo<Activity> pageInfo =new PageInfo<Activity>(ls);
 
         Item para2 = new Item();
         ls.forEach((Activity activity) ->{
+
             para2.setActivityId(activity.getId());
             para2.setUserId(user.getId());
             List<Item> itemLs = itemService.selectBySelective(para2);
@@ -209,10 +222,28 @@ public class UserApi {
             }else{
                 activity.setStatus("已申报");
             }
+            if(activity.getStartTime().compareTo(new SimpleDateFormat("yyyy-MM-dd").format(new Date())) > 0){
+                activity.setState("未开始");
+            }else if(activity.getEndTime().compareTo(new SimpleDateFormat("yyyy-MM-dd").format(new Date())) < 0){
+                activity.setState("已结束");
+            }else{
+                activity.setState("进行中");
+            }
+            if(para.getState() != null && !para.getState().equals("-1")){
+                if(!activity.getState().equals(para.getState())) {
+                    return;
+                }
+            }
+            if(para.getStatus() != null && !para.getStatus().equals("-1")){
+                if(!activity.getStatus().equals(para.getStatus())) {
+                    return;
+                }
+            }
+            ls2.add(activity);
         });
 
         request.setAttribute("page", pageInfo);
-        request.setAttribute("list", ls);
+        request.setAttribute("list", ls2);
 
         return "user/activityList";
     }

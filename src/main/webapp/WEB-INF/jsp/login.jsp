@@ -20,6 +20,11 @@
 <body onload="message()">
 <!-- 登录body -->
 <div class="logDiv">
+
+    <div style="font-size: 60px;color:rgb(254,50,0);position: absolute;top: 30%;right:55%;font-family:Georgia">
+        科研成果申报管理系统
+    </div>
+
     <img class="logBanner" src="img/logBanner.png" />
     <div class="logGet">
         <!-- 头部提示信息 -->

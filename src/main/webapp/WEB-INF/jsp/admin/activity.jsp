@@ -28,12 +28,23 @@
 <body onload="message()">
 <!-- MainForm -->
 <div id="MainForm" style="margin:0 auto;width:60%;margin-top:40px;padding:40px;">
-    <a href="admin/activityList">返回列表</a>
+    <c:if test="${type == 0}">
+        <a href="admin/activityList">返回列表</a>
+    </c:if>
+    <c:if test="${type == 1}">
+        <a href="user/activityList">返回列表</a>
+    </c:if>
     <h3 style="text-align: center;color: #FF6600;display: block;font-size: 1.17em;-webkit-margin-before: 1em;-webkit-margin-after: 1em;-webkit-margin-start: 0px;-webkit-margin-end: 0px;font-weight: bold;">
         ${bean.name}<br/>
     </h3>
     ${bean.description}
-    <br/><br/><a href="admin/activityList">返回列表</a>
+    <br/><br/>
+    <c:if test="${type == 0}">
+    <a href="admin/activityList">返回列表</a>
+    </c:if>
+    <c:if test="${type == 1}">
+        <a href="user/activityList">返回列表</a>
+    </c:if>
 </div>
 
 </body>

@@ -251,10 +251,10 @@
                             </div>
                             <div style="display: inline-block">
                                 <div class="bbD">
-                                    &nbsp;&nbsp;&nbsp;&nbsp;开始时间：<input type="text" class="input1" name = "startTime" id="rstartTime" onclick="laydate()"/>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;开始时间：<input type="text" class="input1" name = "startTime" id="rstartTime" />
                                 </div>
                                 <div class="bbD">
-                                    &nbsp;&nbsp;&nbsp;&nbsp;结束时间：<input type="text" class="input1" name = "endTime" id="rendTime" onclick="laydate()"/>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;结束时间：<input type="text" class="input1" name = "endTime" id="rendTime" />
                                 </div>
                                 <div class="bbD">
                                     &nbsp;&nbsp;&nbsp;&nbsp;申请金额：<input type="text" class="input1" name = "coin" id="rcoin"/>
@@ -295,7 +295,13 @@
             layer.alert(message);
         }
     }
-
+    //执行一个laydate实例
+    laydate.render({
+        elem: '#rstartTime'
+    });
+    laydate.render({
+        elem: '#rendTime'
+    });
     var rid = 0;
     function changeId(id, check){
 

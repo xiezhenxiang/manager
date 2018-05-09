@@ -42,8 +42,8 @@
                 <option value="科技创新">科技创新</option>
                 <option value="科学成果">科学成果</option>
             </select>
-            <span class="input-group-addon" id="basic-addon3">年份</span>
-            <input class="form-control" id="ctime"  onclick="laydate()">
+            <span class="input-group-addon" id="basic-addon3">时间</span>
+            <input class="form-control" id="ctime">
 
             <span class="input-group-btn">
                 <button class="btn btn-primary" type="button" onclick="query()">查询</button>
@@ -63,7 +63,7 @@
             </tr>
 
             <c:forEach items="${list}" var="bean" varStatus="index">
-                <tr class="bgcD">
+                <tr class="bgcA">
                 <td>${index.index + (page.pageNum - 1) * 10  + 1}</td>
                 <td>${bean.name}</td>
                 <td>${bean.type}</td>
@@ -177,6 +177,10 @@
             layer.alert(message);
         }
     }
+
+    laydate.render({
+        elem: '#ctime'//指定元素
+    });
 
     function view(id) {
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.manager.dao.RpMapper">
+<mapper namespace="com.manager.mapper.RpMapper">
   <resultMap id="BaseResultMap" type="com.manager.bean.Rp">
     <result column="rid" jdbcType="INTEGER" property="rid" />
     <result column="pid" jdbcType="INTEGER" property="pid" />
@@ -28,4 +28,11 @@
       </if>
     </trim>
   </insert>
+
+  <delete id="delRp" parameterType="int">
+    DELETE FROM rp WHERE  rid = #{rId}
+  </delete>
+    <select id="getPs" parameterType="int" resultType="int">
+      SELECT pid FROM  rp WHERE  rid = #{rId}
+    </select>
 </mapper>

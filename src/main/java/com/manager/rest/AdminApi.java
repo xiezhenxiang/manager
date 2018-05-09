@@ -4,6 +4,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.manager.bean.*;
 import com.manager.service.*;
+import javafx.beans.DefaultProperty;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.apache.commons.io.FileUtils;
@@ -217,7 +219,7 @@ public class AdminApi {
     }
 
     @RequestMapping("/addActivity")
-    public String addActivity(HttpServletRequest request, Activity activity, MultipartFile file) throws IOException {
+    public String addActivity(HttpServletRequest request, Activity activity, MultipartFile file) throws IOException, ServletException {
         Admin admin = (Admin) request.getSession().getAttribute("admin");
 
         if(!file.getOriginalFilename().equals("")){
@@ -232,10 +234,31 @@ public class AdminApi {
             FileUtils.copyInputStreamToFile(file.getInputStream(), tempFile);
             activity.setFilePath(tempFile.getAbsolutePath().replaceAll("\\\\", "/"));
         }
-        activityService.insertSelective(activity);
+        if(activity.getId() != null && activity.getId() > 0){
+            activityService.updateByPrimaryKeySelective(activity);
+            request.setAttribute("message", "修改成功！");
+            return activityList(request, 1, new Activity());
+        }else {
+            activityService.insertSelective(activity);
+            request.setAttribute("message", "添加成功！");
+            return "admin/addActivity";
+        }
 
-        request.setAttribute("message", "添加成功！");
-        return "admin/addActivity";
+
+    }
+
+    @RequestMapping("/getActivity")
+    public void addActivity(HttpServletResponse response, int id) throws IOException, ServletException {
+
+        response.setCharacterEncoding("utf-8");
+        PrintWriter pw = response.getWriter();
+
+        Activity activity = activityService.selectByPrimaryKey(id);
+        JSONObject json = JSONObject.fromObject(activity);
+
+        pw.write(json.toString());
+        pw.flush();
+        pw.close();
     }
 
     @RequestMapping("/activityList")
@@ -249,11 +272,15 @@ public class AdminApi {
         if(para.getName() != null && !para.getName().trim().equals("")){
             para.setName(URLDecoder.decode(para.getName(), "utf-8"));
         }
+        if(para.getState() != null && !para.getState().trim().equals("")){
+            para.setState(URLDecoder.decode(para.getState(), "utf-8"));
+        }
         if(para.getType() != null && para.getType().equals("-1")){
             para.setType(null);
         }
 
         List<Activity> ls = new ArrayList<Activity>();
+        List<Activity> ls2 = new ArrayList<Activity>();
         PageHelper.startPage(pageNum, 10);
         ls = activityService.selectBySelective(para);
 
@@ -264,16 +291,41 @@ public class AdminApi {
             activity.setApplyCount(applyCount);
             int end = activity.getDescription().length() > 16 ? 16 :activity.getDescription().length();
             activity.setDescription(activity.getDescription().substring(0, end) + (end == 16 ? "....." : ""));
+            if(activity.getStartTime().compareTo(new SimpleDateFormat("yyyy-MM-dd").format(new Date())) > 0){
+                activity.setState("未开始");
+            }else if(activity.getEndTime().compareTo(new SimpleDateFormat("yyyy-MM-dd").format(new Date())) < 0){
+                activity.setState("已结束");
+            }else{
+                activity.setState("进行中");
+            }
+
+            if(para.getState() != null && !para.getState().equals("-1")){
+                if(activity.getState().equals(para.getState())) {
+                    ls2.add(activity);
+                }
+            }else{
+                ls2.add(activity);
+            }
         });
 
         request.setAttribute("page", pageInfo);
-        request.setAttribute("list", ls);
-
+        request.setAttribute("list", ls2);
+        request.setAttribute("type", 0);
         return "admin/activityList";
     }
 
+
+    @RequestMapping("/delActivity")
+    public String delActivity(HttpServletRequest request, Integer id) throws IOException, ServletException {
+
+        activityService.deleteByPrimaryKey(id);
+        request.setAttribute("message", "删除成功！");
+        return activityList(request, 1, new Activity());
+
+    }
+
     @RequestMapping("/activity")
-    public String activity(HttpServletRequest request, Integer id) throws IOException, ServletException {
+    public String activity(HttpServletRequest request, Integer id, @RequestParam(required=true,defaultValue="0") int type) throws IOException, ServletException {
 
         Activity bean = activityService.selectByPrimaryKey(id);
 
@@ -282,6 +334,8 @@ public class AdminApi {
                     .replaceAll("\n", "<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"));
         }
         request.setAttribute("bean", bean);
+        request.setAttribute("type", type);
+
         return "admin/activity";
 
     }
@@ -309,13 +363,23 @@ public class AdminApi {
     }
 
     @RequestMapping("/delAdmin")
-    public String delAdmin(HttpServletRequest request, Integer id) {
+    public String delAdmin(HttpServletRequest request, Integer id) throws IOException, ServletException {
 
         adminService.deleteByPrimaryKey(id);
         request.setAttribute("message", "删除成功！");
-        return "admin/adminList";
+        return adminList(request, 1, "");
     }
 
+    @RequestMapping("/addAdmin")
+    public String addAdmin(HttpServletRequest request, Admin para) throws IOException, ServletException {
+        try {
+            adminService.insertSelective(para);
+            request.setAttribute("message", "添加成功！");
+        }catch (Exception e){
+            request.setAttribute("message", "添加失败！该帐号已存在！");
+        }
+        return adminList(request, 1, "");
+    }
 
     @RequestMapping("/updateAdmin")
     public String updateAdmin(HttpServletRequest request, Admin para) throws IOException, ServletException {
@@ -359,11 +423,11 @@ public class AdminApi {
     }
 
     @RequestMapping("/delUser")
-    public String userList(HttpServletRequest request, Integer id) {
+    public String delUser(HttpServletRequest request, Integer id) throws IOException, ServletException {
 
         adminService.deleteUser(id);
         request.setAttribute("message", "删除成功！");
-        return "admin/userList";
+        return userList(request, 1, "");
     }
 
     @RequestMapping("/updateUser")
@@ -375,4 +439,37 @@ public class AdminApi {
         return userList(request,1,null);
     }
 
+    @RequestMapping(value = "getPrivilegeById")
+    public void getPrivilegeById(HttpServletResponse response, int id) throws UnsupportedEncodingException {
+        PrintWriter pw = null;
+        List<Integer> list = null;
+        try {
+            pw = response.getWriter();
+            list = adminService.getPrivilegeById(id);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        JSONArray jsonObject = JSONArray.fromObject(list);
+        pw.write(jsonObject.toString());
+        pw.close();
+        pw = null;
+    }
+
+
+    @RequestMapping("/quanxian")
+    public String quanxian(HttpServletRequest request, int rId) throws IOException, ServletException {
+        String pIds[] = request.getParameterValues("check");
+        adminService.delRp(rId);
+        for(int i = 0; i < pIds.length; i ++){
+            try {
+
+                int pid = Integer.parseInt(pIds[i]);
+                adminService.addPower(rId, pid);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        request.setAttribute("message", "分配成功!");
+        return adminList(request,1,null);
+    }
 }

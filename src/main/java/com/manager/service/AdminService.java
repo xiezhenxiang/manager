@@ -24,4 +24,12 @@ public interface AdminService {
     void deleteUser(Integer id);
 
     List<Admin> selectByKeyword(String keyword);
+
+    List<Integer> getPrivilegeById(int id);
+
+    void addPower(int rId, int pid);
+
+    void delRp(int rId);
+
+    List<Integer> getPs(Integer rId);
 }

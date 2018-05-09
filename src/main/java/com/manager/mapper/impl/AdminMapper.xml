@@ -134,4 +134,8 @@
       type = #{type,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="getPrivilegeById" parameterType="Integer" resultType="int">
+    SELECT pid FROM rp WHERE rid = #{id}
+  </select>
 </mapper>

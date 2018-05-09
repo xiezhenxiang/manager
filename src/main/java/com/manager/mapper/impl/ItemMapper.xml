@@ -31,7 +31,7 @@
   </sql>
 
   <select id="selectAll" resultMap="BaseResultMap">
-    SELECT * FROM item
+    SELECT * FROM item ORDER BY start_time DESC
   </select>
 
   <select id="selectBySelective" parameterType="com.manager.bean.Item" resultMap="BaseResultMap">
@@ -59,6 +59,7 @@
     <if test="check != null and check != -1">
       AND `check` = #{check}
     </if>
+    ORDER BY start_time DESC
   </select>
 
   <select id="selectByPrimaryKey" parameterType="int" resultMap="BaseResultMap">

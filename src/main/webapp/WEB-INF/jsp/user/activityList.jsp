@@ -30,7 +30,7 @@
 <!-- MainForm -->
 <div id="MainForm">
     <div class="form_boxA">
-        <h2>我的成果列表</h2>
+        <h2>活动列表</h2>
 
         <div class="input-group">
             <span class="input-group-addon" id="basic-addon1">活动名称</span>
@@ -44,7 +44,20 @@
                 <option value="科学成果">科学成果</option>
             </select>
             <span class="input-group-addon" id="basic-addon3">活动时间</span>
-            <input class="form-control" placeholder="请选择活动时间" id="ctime" onclick="laydate()">
+            <input class="form-control" placeholder="请选择活动时间" id="ctime">
+            <span class="input-group-addon">活动状态</span>
+            <select class="form-control" id="cstate">
+                <option value="-1" selected="selected">全部</option>
+                <option value="未开始">未开始</option>
+                <option value="进行中">进行中</option>
+                <option value="已结束">已结束</option>
+            </select>
+            <span class="input-group-addon">申报状态</span>
+            <select class="form-control" id="cstatus">
+                <option value="-1" selected="selected">全部</option>
+                <option value="已申报">已申报</option>
+                <option value="未申报">未申报</option>
+            </select>
             <span class="input-group-btn">
                 <button class="btn btn-primary" type="button" onclick="query()">查询</button>
             </span>
@@ -53,12 +66,14 @@
         <table cellpadding="0" cellspacing="0">
             <tr>
                 <th>序号</th>
-                <th>活动名称</th>
+                <th>活动标题</th>
                 <th>活动类型</th>
+                <th>活动内容</th>
                 <th>开始时间</th>
                 <th>结束时间</th>
                 <th>附件</th>
-                <th>状态</th>
+                <th>活动状态</th>
+                <th>申报状态</th>
                 <th>操作</th>
             </tr>
 
@@ -68,6 +83,7 @@
                     <td>${index.index + (page.pageNum - 1) * 10  + 1}</td>
                     <td>${bean.name}</td>
                     <td>${bean.type}</td>
+                    <td><a href="admin/activity?id=${bean.id}&type=1">${bean.description}</a></td>
                     <td>${bean.startTime}</td>
                     <td>${bean.endTime}</td>
                     <c:if test="${empty bean.filePath or bean.filePath eq ''}">
@@ -76,9 +92,10 @@
                     <c:if test="${not empty bean.filePath and bean.filePath ne ''}">
                         <td><a href="user/uploadFile?filePath=${bean.filePath}">附件下载</a></td>
                     </c:if>
+                    <td>${bean.state}</td>
                     <td>${bean.status}</td>
-                    <td><a href="#" data-toggle="modal" data-target="#ViewModal" onclick="view('${bean.id}')">详情</a>
-                        | <a onclick="apply('${bean.id}', '${bean.name}', '${bean.type}','${bean.status}')">申报</a> | <a onclick="cancelApply('${bean.id}', '${bean.status}')">取消申报</a>
+                    <td>
+                    <a onclick="apply('${bean.id}', '${bean.name}', '${bean.type}')">申报</a> | <a onclick="cancelApply('${bean.id}', '${bean.status}')">取消申报</a>
                 </tr>
 
             </c:forEach>
@@ -162,10 +179,10 @@
                             </div>
                             <div style="display: inline-block">
                                 <div class="bbD">
-                                    &nbsp;&nbsp;&nbsp;&nbsp;开始时间：<input type="text" class="input1" name = "startTime" id="rstartTime" onclick="laydate()"/>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;开始时间：<input type="text" class="input1" name = "startTime" id="rstartTime" />
                                 </div>
                                 <div class="bbD">
-                                    &nbsp;&nbsp;&nbsp;&nbsp;结束时间：<input type="text" class="input1" name = "endTime" id="rendTime" onclick="laydate()"/>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;结束时间：<input type="text" class="input1" name = "endTime" id="rendTime"/>
                                 </div>
                                 <div class="bbD">
                                     &nbsp;&nbsp;&nbsp;&nbsp;申请金额：<input type="text" class="input1" name = "coin" id="rcoin"/>
@@ -205,14 +222,17 @@
         }
     }
 
-    function query(){
-        var type = $("#ctype").val().trim();
-        var name = $("#cname").val().trim();
-        var time = $("#ctime").val().trim();
-        var url = encodeURI(encodeURI("user/activityList?type=" + type + "&name=" + name + "&startTime=" + time));
-        window.location.href = url;
+    laydate.render({
+        elem: '#ctime'//指定元素
+    });
 
-    }
+    //执行一个laydate实例
+    laydate.render({
+        elem: '#rstartTime'
+    });
+    laydate.render({
+        elem: '#rendTime'
+    });
 
     function view(id) {
 
@@ -235,10 +255,15 @@
         })
     }
 
-    function apply(id, name, type, status) {
+    function apply(id, name, type) {
 
         if(status == "已申报"){
             layer.alert("你已申报该活动，请勿重复操作！");
+            return;
+        }
+
+        if(state == "已结束"){
+            layer.alert("该活动已结束！");
             return;
         }
 
@@ -256,6 +281,7 @@
     }
 
     function validation() {
+
         var name = $("#rname").val().trim();
         var type = $("#rtype").val().trim();
         var domain = $("#rdomain").val().trim();
@@ -281,7 +307,9 @@
         var type = $("#ctype").val().trim();
         var name = $("#cname").val().trim();
         var time = $("#ctime").val().trim();
-        var url = encodeURI(encodeURI("user/activityList?type=" + type + "&name=" + name + "&startTime=" +time));
+        var state = $("#cstate").val().trim();
+        var status = $("#cstatus").val().trim();
+        var url = encodeURI(encodeURI("user/activityList?type=" + type + "&name=" + name + "&startTime=" +time + "&state=" +state + "&status=" +status));
         window.location.href = url;
 
     }

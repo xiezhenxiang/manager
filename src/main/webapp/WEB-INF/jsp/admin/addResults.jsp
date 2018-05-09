@@ -59,10 +59,10 @@
                     </div>
                     <div style="display: inline-block">
                         <div class="bbD">
-                            &nbsp;&nbsp;&nbsp;&nbsp;开始时间：<input type="text" class="input1" name = "startTime" id="startTime" onclick="laydate()"/>
+                            &nbsp;&nbsp;&nbsp;&nbsp;开始时间：<input type="text" class="input1" name = "startTime" id="startTime"/>
                         </div>
                         <div class="bbD">
-                            &nbsp;&nbsp;&nbsp;&nbsp;结束时间：<input type="text" class="input1" name = "endTime" id="endTime" onclick="laydate()"/>
+                            &nbsp;&nbsp;&nbsp;&nbsp;结束时间：<input type="text" class="input1" name = "endTime" id="endTime"/>
                         </div>
                         <div class="bbD">
                             &nbsp;&nbsp;&nbsp;&nbsp;申请金额：<input type="text" class="input1" name = "coin" id="coin"/>
@@ -100,6 +100,14 @@
             alert(message);
         }
     }
+
+    //执行一个laydate实例
+    laydate.render({
+        elem: '#startTime'//指定元素
+    });
+    laydate.render({
+        elem: '#endTime'//指定元素
+    });
 
     function validation() {
         var name = $("#name").val().trim();

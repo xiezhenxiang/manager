@@ -1,6 +1,7 @@
 package com.manager.rest;
 
 import com.manager.bean.Admin;
+import com.manager.bean.Rp;
 import com.manager.bean.User;
 import com.manager.service.AdminService;
 import com.manager.service.UserService;
@@ -49,6 +50,7 @@ public class LoginApi {
             }
         }else{
             List<Admin> ls = new ArrayList<Admin>();
+
             Admin para = new Admin();
             para.setAccount(account);
             para.setPwd(pwd);
@@ -57,6 +59,11 @@ public class LoginApi {
                 request.setAttribute("message", "帐号密码错误，请重新登录!");
                 return "login";
             }else{
+                request.getSession().invalidate();
+                List<Integer> ps = adminService.getPs(ls.get(0).getId());
+                for(int i = 0; ps != null && i < ps.size(); i ++){
+                    request.getSession().setAttribute("power" + ps.get(i), 1);
+                }
                 para = ls.get(0);
                 request.getSession().setAttribute("admin", para);
                 return "admin/index";

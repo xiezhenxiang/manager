@@ -35,7 +35,10 @@
     <div class="input-group" style="float:left;width:20%;">
 
         <input class="form-control" id="keyword">
-        <span class="input-group-addon" id="basic-addon1" onclick="search()">搜索</span>
+        <span class="input-group-addon" id="basic-addon1" onclick="search()">搜索</span>&nbsp;&nbsp;
+    </div>
+    <div class="input-group" style="float:left;width:10%;">
+        <span class="input-group-addon" id="basic-addon1" data-toggle="modal" data-target="#GlyModal">添加管理员</span>
     </div>
 
 </div>
@@ -53,13 +56,15 @@
             </tr>
 
             <c:forEach items="${list}" var="bean" varStatus="index">
+                <c:if test="${admin.id != bean.id}">
                 <tr>
                     <td>${index.index + (page.pageNum - 1) * 10  + 1}</td>
                     <td>${bean.name}</td>
                     <td>${bean.account}</td>
                     <td>${bean.phone}</td>
-                    <td><a href="admin/delAdmin?id=${bean.id}">删除</a> | <a data-toggle="modal" data-target="#GlyPrivilegeModal"> 权限</a></td>
+                    <td><a href="admin/delAdmin?id=${bean.id}">删除</a> | <a data-toggle="modal" data-target="#GlyPrivilegeModal" onclick="quanxian('${bean.id}')"> 权限</a></td>
                 </tr>
+                </c:if>
             </c:forEach>
 
         </table>
@@ -89,36 +94,89 @@
                 </button>
                 <h4 class="modal-title" id="myModalLabel">权限分配</h4>
             </div>
-            <table class="table table-bordered table-striped">
+            <form action="admin/quanxian" method="post">
+                <input type="hidden" name = "rId" id = "rId">
+            <table class="table table-bordered table-striped" style="padding:20px">
                 <tr>
-                    <th><input type="checkbox" name="check1" id="check1"
+                    <th><input type="checkbox" name="check" id="check1"
                                value="1" />&nbsp;&nbsp;公告发布</th>
-                    <th><input type="checkbox" name="check2" id="check1"
+                    <th><input type="checkbox" name="check" id="check2"
                                value="2" />&nbsp;&nbsp;成果审批</th>
-                    <th><input type="checkbox" name="check3" id="check1"
+                    <th><input type="checkbox" name="check" id="check3"
                                value="3" />&nbsp;&nbsp;项目审批</th>
-                    <th><input type="checkbox" name="check4" id="check1"
-                               value="4" />&nbsp;&nbsp;活动添加</th>
+
                 </tr>
                 <tr>
-                    <th><input type="checkbox" name="check5" id="check1"
+                    <th><input type="checkbox" name="check" id="check4"
+                               value="4" />&nbsp;&nbsp;活动添加</th>
+                    <th><input type="checkbox" name="check" id="check5"
                                value="5" />&nbsp;&nbsp;用户管理</th>
-                    <th><input type="checkbox" name="check6" id="check1"
+                    <th><input type="checkbox" name="check" id="check6"
                                value="6" />&nbsp;&nbsp;公告编辑</th>
-                    <th><input type="checkbox" name="check7" id="check1"
+                </tr>
+                <tr>
+                    <th><input type="checkbox" name="check" id="check7"
+                               value="9" />&nbsp;&nbsp;成果录入</th>
+                    <th><input type="checkbox" name="check" id="check7"
                                value="7" />&nbsp;&nbsp;活动编辑</th>
-                    <th><input type="checkbox" name="check8" id="check1"
+                    <th><input type="checkbox" name="check" id="check8"
                                value="8" />&nbsp;&nbsp;权限管理</th>
                 </tr>
             </table>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary" id="setPrivilege">设置</button>
+                <button type="submit" class="btn btn-primary" id="setPrivilege">设置</button>
             </div>
+            </form>
         </div>
     </div>
 </div>
 
+
+<div class="modal fade" id="GlyModal" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style = "width:85%">
+
+            <div class="page ">
+                <!-- 会员注册页面样式 -->
+                <div class="banneradd bor">
+                    <div class="baTopNo">
+                        <span>添加管理员</span>
+                    </div>
+                    <div class="baBody">
+                        <form action="admin/addAdmin" method="post" onsubmit="return validation2();">
+                            <div class="bbD">
+                                账号：
+                                <input type="text" class="input1" name="account" id="account" maxlength="18" placeholder="请输入账号" />
+                            </div>
+                            <div class="bbD">
+                                密码：<input type="password" class="input1" name="pwd" id="pwd"
+                                          placeholder="请输入密码" maxlength="25" />
+                            </div>
+                            <div class="bbD">
+                                姓名：<input type="text" class="input1" name="name"
+                                          id="name" placeholder="请输入姓名" maxlength="16" />
+                            </div>
+                            <div class="bbD">
+                                电话：<input type="text" class="input1" name="phone"
+                                          id="phone" maxlength="11" placeholder="请输入电话"/>
+                            </div>
+                            <div class="bbD">
+                                <p class="bbDP">
+                                    <button type="submit" class="btn_ok btn_yes" href="#">提交</button>
+                                    <button type="button" class="btn_ok btn_no" data-dismiss="modal">取消</button>
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- 会员注册页面样式end -->
+            </div>
+        </div>
+    </div>
+</div>
+</div>
 </body>
 <script>
     function message() {
@@ -128,8 +186,44 @@
         }
     }
 
+    function quanxian(id) {
+        $.ajax({
+            type : "POST",
+            url : "admin/getPrivilegeById",
+            data : {
+                id : id
+            },
+            dataType : "json",
+            success : function(data) {
+                var str = data;
+                for (var i = 1; i <= 8 ; i++) {
+                    $("#check" + i).removeAttr(
+                        "checked");
+                }
+                console.log(str);
+                for (var i = 0; i < str.length; i++) {
+                    var temp = "check" + str[i];
+                    $("#" + temp).prop("checked", 'true');
+                }
+                document.getElementById("rId").value = id;
+            },
+            error : function(data) {
+                layer.alert("出错了！");
+            }
 
+        });
+    }
 
+    function validation2(){
+        var account = $("#account").val().trim();
+        var pwd = $("#pwd").val().trim();
+        var name = $("#name").val().trim();
+        if(name == "" || account == "" || pwd == ""){
+            layer.alert("请补全输入信息！")
+            return false
+        }
+        return true;
+    }
 
     function search() {
         var keyword = $("#keyword").val().trim();

@@ -47,12 +47,16 @@
                 <option value="科学成果">科学成果</option>
             </select>
             <span class="input-group-addon" id="basic-addon3">活动时间</span>
-            <input class="form-control" placeholder="请选择活动时间" id="ctime" onclick="laydate()">
+            <input class="form-control"  id="ctime">
+            <span class="input-group-addon">活动状态</span>
+            <select class="form-control" id="cstate">
+                <option value="-1" selected="selected">全部</option>
+                <option value="未开始">未开始</option>
+                <option value="进行中">进行中</option>
+                <option value="已结束">已结束</option>
+            </select>
             <span class="input-group-btn">
                 <button class="btn btn-primary" type="button" onclick="query()">查询</button>
-            </span>
-            <span class="input-group-btn">
-                <button class="btn btn-primary" type="button" onclick="print()">打印</button>
             </span>
         </div>
         <div id="con">
@@ -66,6 +70,7 @@
                 <th>结束时间</th>
                 <th>申报人数</th>
                 <th>附件</th>
+                <th>活动状态</th>
                 <th>操作</th>
             </tr>
 
@@ -74,7 +79,7 @@
                     <td>${index.index + (page.pageNum - 1) * 10  + 1}</td>
                     <td>${bean.name}</td>
                     <td>${bean.type}</td>
-                    <td><a href="admin/activity?id=${bean.id}">${bean.description}</a></td>
+                    <td><a href="admin/activity?id=${bean.id}&type=0">${bean.description}</a></td>
                     <td>${bean.startTime}</td>
                     <td>${bean.endTime}</td>
                     <td>${bean.applyCount}</td>
@@ -84,7 +89,15 @@
                     <c:if test="${not empty bean.filePath and bean.filePath ne ''}">
                         <td><a href="user/uploadFile?filePath=${bean.filePath}">附件下载</a></td>
                     </c:if>
-                    <td><a>修改</a> | <a>删除</a></td>
+                    <td>${bean.state}</td>
+                    <td>
+                        <c:if test="${power7  != null}">
+                        <a data-toggle="modal" data-target="#updateModal" onclick="update('${bean.id}')">修改</a>| <a href="admin/delActivity?id=${bean.id}">删除</a>
+                        </c:if>
+                        <c:if test="${power7  == null}">
+                            无权限
+                        </c:if>
+                    </td>
                 </tr>
 
             </c:forEach>
@@ -105,8 +118,65 @@
     <li><a href="admin/activityList?pageNum=${page.lastPage}">尾页</a></li>
 </ul>
 
+
+<div class="modal fade" id="updateModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 130%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">活动修改</h4>
+            </div>
+
+
+            <form action="admin/addActivity" method="post" enctype="multipart/form-data" onsubmit="return validation()">
+                <div style="display: inline-block">
+                    <<input type="hidden" name="id" id="aId">
+                    <div class="bbD">
+                        &nbsp;&nbsp;&nbsp;&nbsp;活动类型：<select class="input1" name= "type" id="type">
+                        <option value="综合" selected="selected">综合</option>
+                        <option value="理论成果">理论成果</option>
+                        <option value="科技创新">科技创新</option>
+                        <option value="科学成果">科学成果</option>
+                    </select>
+                    </div>
+                    <div class="bbD">
+                        &nbsp;&nbsp;&nbsp;&nbsp;活动名称：<input type="text" class="input1" name = "name" id="name"/>
+                    </div>
+
+
+                </div>
+                <div style="display: inline-block">
+                    <div class="bbD">
+                        &nbsp;&nbsp;&nbsp;&nbsp;开始时间：<input type="text" class="input1" name = "startTime" id="startTime" />
+                    </div>
+                    <div class="bbD">
+                        &nbsp;&nbsp;&nbsp;&nbsp;结束时间：<input type="text" class="input1" name = "endTime" id="endTime" />
+                    </div>
+
+                </div>
+                <br/>&nbsp;&nbsp;&nbsp;&nbsp;活动详情：
+                <div class="bbD">
+                    &nbsp;&nbsp;&nbsp;&nbsp;<textarea name="description" id="description" rows="10" style="width: 695px;margin-left:68px"></textarea>
+                </div>
+                <div class="bbD">
+                    &nbsp;&nbsp;&nbsp;&nbsp;材料附件：<input type="file" name = "file" id="file"/>
+                </div>
+                <div class="bbD">
+                    <p class="bbDP" style="margin-left: 330px">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button><button class="btn btn-primary"  type="submit">提交</button>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 </body>
 <script>
+
     function message() {
         var message = "${message}";
         if(message != null && message != ""){
@@ -114,40 +184,55 @@
         }
     }
 
+    //执行一个laydate实例
+    laydate.render({
+        elem: '#startTime'//指定元素
+    });
+    laydate.render({
+        elem: '#endTime'//指定元素
+    });
+    laydate.render({
+        elem: '#ctime'//指定元素
+    });
+    function  update(aId) {
+
+        $.ajax({
+           url: "admin/getActivity",
+           type: "post",
+           data: {id: aId},
+           dataType: "json",
+            success: function(data){
+                console.log(data);
+                $("#aId").val(data.id);
+                $("#name").val(data.name);
+                $("#startTime").val(data.startTime);
+                $("#endTime").val(data.endTime);
+                $("#description").val(data.description);
+            },
+            error:function(){
+            }
+        });
+    }
+
     function query(){
         var type = $("#ctype").val().trim();
         var name = $("#cname").val().trim();
         var time = $("#ctime").val().trim();
-        var url = encodeURI(encodeURI("admin/activityList?type=" + type + "&name=" + name + "&startTime=" + time));
+        var state = $("#cstate").val().trim();
+        var url = encodeURI(encodeURI("admin/activityList?type=" + type + "&name=" + name + "&startTime=" + time + "&state=" + state));
         window.location.href = url;
 
     }
 
-    function print() {
-
-        var headstr = "<html><head><title></title></head><body>";
-        var footstr = "</body>";
-        var newstr = document.getElementById("con").innerHTML;
-        var oldstr = document.body.innerHTML;
-        document.body.innerHTML = oldstr;
-        window.print();
-        document.body.innerHTML = oldstr;
-        return false;
-    }
 
     function validation() {
-        var name = $("#rname").val().trim();
-        var type = $("#rtype").val().trim();
-        var domain = $("#rdomain").val().trim();
-        var description = $("#rdescription").val().trim();
-        var startTime = $("#rstartTime").val().trim();
-        var endTime = $("#rendTime").val().trim();
-        var coin = $("#rcoin").val().trim();
-        var group = $("#rgroup").val().trim();
-        var unit = $("#runit").val().trim();
-        var path = $("#rfile").val() + "";
+        var name = $("#name").val().trim();
+        var description = $("#description").val().trim();
+        var startTime = $("#startTime").val().trim();
+        var endTime = $("#endTime").val().trim();
+        var path = $("#file").val() + "";
 
-        if(name == "" || type == "" || domain == "" || description == "" || startTime == "" || endTime == "" || coin == "" || group == "" || unit == ""){
+        if(name == "" || description == "" || startTime == "" || endTime == ""){
             layer.alert("请补全输入信息！");
             return false;
         }else if(path != "" && path.substring(path.lastIndexOf(".") + 1) != "rar" && path.substring(path.lastIndexOf(".") + 1) != "zip"){
@@ -156,6 +241,7 @@
         }
         return true;
     }
+
 
 
 </script>

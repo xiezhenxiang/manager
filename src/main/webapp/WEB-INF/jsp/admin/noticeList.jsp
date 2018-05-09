@@ -45,7 +45,12 @@
                     <td>${index.index + (page.pageNum - 1) * 10  + 1}</td>
                     <td><a href="admin/notice?id=${bean.id}">${bean.title}</a></td>
                     <td>${bean.pubTime}</td>
-                    <td><a href="admin/delNotice?id=${bean.id}">删除</a></td>
+                    <c:if test="${power6  != null}">
+                        <td><a href="admin/delNotice?id=${bean.id}">删除</a></td>
+                    </c:if>
+                    <c:if test="${power6  == null}">
+                        <td>无权限</td>
+                    </c:if>
                 </tr>
             </c:forEach>
 

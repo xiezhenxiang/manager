@@ -27,7 +27,7 @@
         description
     </sql>
     <select id="selectAll" resultMap="BaseResultMap">
-        SELECT * FROM results
+        SELECT * FROM results ORDER BY start_time DESC
     </select>
 
     <select id="selectBySelective" parameterType="com.manager.bean.Results" resultMap="BaseResultMap">
@@ -57,8 +57,9 @@
             AND `check` = #{check}
         </if>
         <if test='startTime != null and startTime != ""'>
-            AND #{startTime} > start_time AND end_time > #{startTime}
+            AND #{startTime} >= start_time AND end_time >= #{startTime}
         </if>
+        ORDER BY start_time DESC
     </select>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">

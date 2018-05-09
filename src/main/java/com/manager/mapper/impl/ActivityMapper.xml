@@ -11,7 +11,7 @@
   </resultMap>
 
   <select id="selectAll" resultMap="BaseResultMap">
-    SELECT * FROM activity
+    SELECT * FROM activity ORDER BY start_time DESC
   </select>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -30,11 +30,13 @@
       AND name LIKE CONCAT(CONCAT("%",#{name}),"%")
     </if>
     <if test='startTime != null and startTime != ""'>
-      AND #{startTime} > start_time AND end_time > #{startTime}
+      AND #{startTime} >= start_time AND end_time >= #{startTime}
     </if>
     <if test="description != null">
       AND description LIKE #{description}
     </if>
+
+    ORDER BY start_time DESC
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
@@ -118,6 +120,9 @@
       </if>
       <if test="description != null">
         description = #{description,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="filePath != null">
+        filePath = #{filePath,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}

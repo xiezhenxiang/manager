@@ -245,6 +245,7 @@
     }
 
 
+
     function query(){
         var type = $("#ctype").val();
         var name = $("#cname").val();
@@ -253,6 +254,10 @@
         window.location.href = url;
 
     }
+
+    laydate.render({
+        elem: '#ctime'//指定元素
+    });
 
     var rid = 0;
     function changeId(id) {

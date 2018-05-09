@@ -81,8 +81,8 @@
                                 No. 136 science Avenue, Zhengzhou high tech Zone, Henan<br>
                                 Made In China</p><br/><br/><br/>
 
-                            <h4>客服</h4>
-                            <p>24小时热线：0371-788-3333<br>
+                            <h4>技术支持</h4>
+                            <p>24小时热线：0371-666-8888<br>
                                 Email：<a href="mailto:MZ_KF@meizu.com">CGManage@KC.com</a></p>
 
                         </div>

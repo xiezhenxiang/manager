@@ -24,4 +24,6 @@ public interface AdminMapper {
     List<Admin> selectAdminSelective(Admin para);
 
     List<Admin> selectByKeyWord(@Param("keyword") String keyword);
+
+    List<Integer> getPrivilegeById(@Param("id")int id);
 }
