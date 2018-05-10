@@ -45,7 +45,7 @@ public class AdminApi {
     @RequestMapping("/addResults")
     public String addResults(HttpServletRequest request, Results results, MultipartFile file) throws IOException {
 
-
+        System.out.println(123);
         if(!file.getOriginalFilename().equals("")){
 
             File dataDir = new File("C:/bsData");
