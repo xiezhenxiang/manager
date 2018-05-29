@@ -95,7 +95,7 @@
                     <td>${bean.state}</td>
                     <td>${bean.status}</td>
                     <td>
-                    <a onclick="apply('${bean.id}', '${bean.name}', '${bean.type}')">申报</a> | <a onclick="cancelApply('${bean.id}', '${bean.status}')">取消申报</a>
+                    <a onclick="apply('${bean.id}', '${bean.name}', '${bean.type}','${bean.state}','${bean.status}')">申报</a> | <a onclick="cancelApply('${bean.id}', '${bean.status}')">取消申报</a>
                 </tr>
 
             </c:forEach>
@@ -215,7 +215,9 @@
 
 </body>
 <script>
+
     function message() {
+
         var message = "${message}";
         if(message != null && message != ""){
             layer.alert(message);
@@ -255,7 +257,7 @@
         })
     }
 
-    function apply(id, name, type) {
+    function apply(id, name, type, state, status) {
 
         if(status == "已申报"){
             layer.alert("你已申报该活动，请勿重复操作！");
